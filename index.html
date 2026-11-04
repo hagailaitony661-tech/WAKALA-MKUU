@@ -82,13 +82,34 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}
 
 <section class="section" id="reports">
  <div class="page-head"><div><h1>Ripoti</h1><p>Muhtasari wa fedha na shughuli</p></div><button class="btn gold" onclick="printReport()">Chapisha / PDF</button></div>
- <div class="panel" id="reportPrint"><h2>HAGAI AGENT PRO — Ripoti ya shughuli</h2><p id="reportDate" class="muted"></p><div class="grid"><div><div class="metric-label">Cash</div><b id="rCash">TZS 0</b></div><div><div class="metric-label">Float</div><b id="rFloat">TZS 0</b></div><div><div class="metric-label">Benki</div><b id="rBank">TZS 0</b></div><div><div class="metric-label">Miamala</div><b id="rCount">0</b></div></div><h3 style="margin-top:22px">Salio kwa akaunti</h3><div id="reportBalances"></div><h3 style="margin-top:22px">Miamala ya leo</h3><div id="reportTx"></div></div>
+ <div class="panel" id="reportPrint">
+  <div style="display:flex;align-items:center;gap:15px;margin-bottom:15px;border-bottom:2px solid var(--line);padding-bottom:12px">
+    <div id="printLogoArea"></div>
+    <div>
+      <h2 id="printBizName" style="margin:0;color:var(--navy)">HAGAI AGENT PRO</h2>
+      <p id="printBranchName" style="margin:2px 0 0;color:var(--muted);font-size:13px"></p>
+    </div>
+  </div>
+  <p id="reportDate" class="muted"></p>
+  <div class="grid"><div><div class="metric-label">Cash</div><b id="rCash">TZS 0</b></div><div><div class="metric-label">Float</div><b id="rFloat">TZS 0</b></div><div><div class="metric-label">Benki</div><b id="rBank">TZS 0</b></div><div><div class="metric-label">Miamala</div><b id="rCount">0</b></div></div>
+  <h3 style="margin-top:22px">Salio kwa akaunti</h3><div id="reportBalances"></div>
+  <h3 style="margin-top:22px">Miamala ya leo</h3><div id="reportTx"></div>
+ </div>
 </section>
 
 <section class="section" id="settings">
- <div class="page-head"><div><h1>Mipangilio na Backup</h1><p>Jina la biashara na usimamizi wa taarifa</p></div></div>
+ <div class="page-head"><div><h1>Mipangilio na Backup</h1><p>Jina la biashara, logo na usimamizi wa taarifa</p></div></div>
  <div class="two-col">
-  <div class="panel"><h3>Wasifu wa biashara</h3><div class="form-grid" style="margin-top:14px"><div class="field full"><label>Jina la biashara / wakala</label><input id="businessName" placeholder="Mfano: Wakala wa Mbalizi"></div><div class="field"><label>Jina la tawi</label><input id="branchName" placeholder="Makao makuu"></div><div class="field"><label>Sarafu</label><select id="currency"><option value="TZS">TZS</option></select></div></div><div class="form-actions"><button class="btn" onclick="saveSettings()">Hifadhi mipangilio</button></div></div>
+  <div class="panel">
+    <h3>Wasifu wa biashara na Logo</h3>
+    <div class="form-grid" style="margin-top:14px">
+      <div class="field full"><label>Jina la biashara / wakala</label><input id="businessName" placeholder="Mfano: Wakala wa Mbalizi"></div>
+      <div class="field"><label>Jina la tawi</label><input id="branchName" placeholder="Makao makuu"></div>
+      <div class="field"><label>Namba ya simu / Anwani</label><input id="bizPhone" placeholder="Mfano: 0750000000"></div>
+      <div class="field full"><label>Kiungo cha Logo (Logo Image URL)</label><input id="logoUrl" placeholder="Weka link ya picha ya logo hapa"></div>
+    </div>
+    <div class="form-actions"><button class="btn" onclick="saveSettings()">Hifadhi mipangilio</button></div>
+  </div>
   <div class="panel"><h3>Backup na kurejesha</h3><p class="muted">Pakua nakala ya taarifa zako au rejesha backup ya awali kwenye kifaa hiki.</p><div class="actions"><button class="btn" onclick="exportBackup()">Export Backup (JSON)</button><label class="btn light" for="importFile">Import Backup</label><input id="importFile" type="file" accept=".json,application/json" class="hidden"></div><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><button class="btn danger" onclick="clearAll()">Futa taarifa zote</button></div>
  </div>
 </section>
@@ -105,7 +126,7 @@ const providers=[
  ['CRDB','bank'],['NMB','bank'],['NBC','bank'],['Equity Bank','bank'],['Benki nyingine','bank'],['Cash','cash']
 ];
 let state=load();
-function fresh(){return {settings:{business:'',branch:'Makao makuu',currency:'TZS'},balances:{},transactions:[],handovers:[]}}
+function fresh(){return {settings:{business:'',branch:'Makao makuu',phone:'',logo:'',currency:'TZS'},balances:{},transactions:[],handovers:[]}}
 function load(){try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return fresh()}}
 function save(){localStorage.setItem(KEY,JSON.stringify(state));render()}
 function money(n){return 'TZS '+Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2})}
@@ -146,18 +167,57 @@ ${providers.filter(p=>p[1]!=='cash').map(p=>`<div class="field"><label>${p[0]} i
 <div class="field"><label>Sahihi ya Boss (andika jina)</label><input name="bossSign" required></div><div class="field"><label>Sahihi ya mfanyakazi (andika jina)</label><input name="staffSign" required></div>
 </div><div class="form-actions"><button class="btn">Hifadhi na tengeneza hati</button></div></form>`);
 document.getElementById('handForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target),given=Number(f.get('cashGiven'));providers.filter(p=>p[1]!=='cash').forEach(p=>given+=Number(f.get('a_'+p[0])||0));let h={id:'HO-'+Date.now(),date:f.get('date'),shift:f.get('shift'),boss:f.get('boss'),staff:f.get('staff'),given,returned:Number(f.get('returned')),note:f.get('note'),bossSign:f.get('bossSign'),staffSign:f.get('staffSign'),cash:Number(f.get('cashGiven')),accounts:providers.filter(p=>p[1]!=='cash').map(p=>({name:p[0],amount:Number(f.get('a_'+p[0])||0)}))};h.difference=h.given-h.returned;state.handovers.unshift(h);save();closeModal();showPage('handover');printHandover(h.id)}}
-function printHandover(id){let h=state.handovers.find(x=>x.id===id);if(!h)return;let w=window.open('','_blank');if(!w){alert('Ruhusu pop-up ili kuchapisha hati.');return}w.document.write(`<html><head><title>${h.id}</title><style>body{font:14px Arial;padding:30px;color:#182338}h1{color:#101d3a}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:9px;text-align:left}.sign{display:flex;justify-content:space-between;margin-top:65px}.muted{color:#666}</style></head><body><h1>HAGAI AGENT PRO</h1><h2>HATI YA MAKABIDHIANO</h2><p>Kumbukumbu: <b>${esc(h.id)}</b> | Tarehe: ${esc(h.date)} | Zamu: ${esc(h.shift)}</p><p>Boss: <b>${esc(h.boss)}</b> &nbsp; Mfanyakazi: <b>${esc(h.staff)}</b></p><table><tr><th>Akaunti</th><th>Kiasi kilichokabidhiwa</th></tr><tr><td>Cash</td><td>${money(h.cash)}</td></tr>${h.accounts.map(a=>`<tr><td>${esc(a.name)}</td><td>${money(a.amount)}</td></tr>`).join('')}<tr><th>Jumla iliyokabidhiwa</th><th>${money(h.given)}</th></tr><tr><td>Jumla iliyorejeshwa</td><th>${money(h.returned)}</th></tr><tr><th>Tofauti</th><th>${money(h.difference)}</th></tr></table><p>Maelezo: ${esc(h.note||'—')}</p><div class="sign"><div>Boss: ___________________<br>${esc(h.bossSign)}</div><div>Mfanyakazi: ______________<br>${esc(h.staffSign)}</div></div><p class="muted">Hati imetengenezwa na HAGAI AGENT PRO. Thibitisha hesabu na salio halisi kabla ya kusaini.</p><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()}
+function printHandover(id){let h=state.handovers.find(x=>x.id===id);if(!h)return;let w=window.open('','_blank');if(!w){alert('Ruhusu pop-up ili kuchapisha hati.');return}
+let biz=state.settings.business||'HAGAI AGENT PRO', branch=state.settings.branch||'', logo=state.settings.logo||'', phone=state.settings.phone||'';
+w.document.write(`<html><head><title>${h.id}</title><style>body{font:14px Arial;padding:30px;color:#182338}h1{color:#101d3a}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:9px;text-align:left}.sign{display:flex;justify-content:space-between;margin-top:65px}.muted{color:#666}</style></head><body>
+<div style="display:flex;align-items:center;gap:15px;margin-bottom:15px;border-bottom:2px solid #ddd;padding-bottom:10px">
+  ${logo?`<img src="${esc(logo)}" style="max-height:50px;max-width:120px;object-fit:contain">`:''}
+  <div><h2 style="margin:0">${esc(biz)}</h2><p style="margin:2px 0 0;color:#666;font-size:12px">${esc(branch)} ${phone?'| Simu: '+esc(phone):''}</p></div>
+</div>
+<h3>HATI YA MAKABIDHIANO</h3><p>Kumbukumbu: <b>${esc(h.id)}</b> | Tarehe: ${esc(h.date)} | Zamu: ${esc(h.shift)}</p><p>Boss: <b>${esc(h.boss)}</b> &nbsp; Mfanyakazi: <b>${esc(h.staff)}</b></p><table><tr><th>Akaunti</th><th>Kiasi kilichokabidhiwa</th></tr><tr><td>Cash</td><td>${money(h.cash)}</td></tr>${h.accounts.map(a=>`<tr><td>${esc(a.name)}</td><td>${money(a.amount)}</td></tr>`).join('')}<tr><th>Jumla iliyokabidhiwa</th><th>${money(h.given)}</th></tr><tr><td>Jumla iliyorejeshwa</td><th>${money(h.returned)}</th></tr><tr><th>Tofauti</th><th>${money(h.difference)}</th></tr></table><p>Maelezo: ${esc(h.note||'—')}</p><div class="sign"><div>Boss: ___________________<br>${esc(h.bossSign)}</div><div>Mfanyakazi: ______________<br>${esc(h.staffSign)}</div></div><p class="muted">Hati imetengenezwa na HAGAI AGENT PRO.</p><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()}
 function render(){let t=totals();document.getElementById('mCash').textContent=money(t.cash);document.getElementById('mFloat').textContent=money(t.float);document.getElementById('mBank').textContent=money(t.bank);document.getElementById('mCount').textContent=state.transactions.filter(x=>x.date===dateNow()).length;
 let rows=providers.map(([n,type])=>({n,type,v:current(n)}));document.getElementById('dashBalances').innerHTML=rows.map(r=>`<div class="balance-row"><span>${esc(r.n)}</span><b>${money(r.v)}</b></div>`).join('');
 let recent=state.transactions.slice(0,5);document.getElementById('recentTransactions').innerHTML=recent.length?recent.map(x=>`<div class="balance-row"><span>${esc(x.type)} · ${esc(x.account)}<small class="muted" style="display:block">${esc(x.date)}</small></span><b>${money(x.amount)}</b></div>`).join(''):'<div class="empty">Hakuna muamala bado.</div>';
-renderTransactions();renderBalances();renderHandovers();renderReport();document.getElementById('businessName').value=state.settings.business||'';document.getElementById('branchName').value=state.settings.branch||''}
+renderTransactions();renderBalances();renderHandovers();renderReport();
+document.getElementById('businessName').value=state.settings.business||'';
+document.getElementById('branchName').value=state.settings.branch||'';
+document.getElementById('bizPhone').value=state.settings.phone||'';
+document.getElementById('logoUrl').value=state.settings.logo||'';
+}
 function renderTransactions(){let q=(document.getElementById('txSearch')?.value||'').toLowerCase(),a=state.transactions.filter(x=>(x.account+' '+x.ref+' '+x.note+' '+x.type).toLowerCase().includes(q));document.getElementById('txRows').innerHTML=a.length?a.map(x=>`<tr><td>${esc(x.date)}</td><td><span class="tag ${x.type==='Withdrawal'||x.type==='Gharama'?'out':''}">${esc(x.type)}</span></td><td>${esc(x.account)}</td><td>${money(x.amount)}</td><td>${esc(x.ref||'—')}</td><td>${esc(x.note||'—')}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">Hakuna miamala iliyopatikana.</td></tr>'}
 document.getElementById('txSearch').addEventListener('input',renderTransactions);
 function renderBalances(){document.getElementById('balanceRows').innerHTML=providers.map(([n,type])=>`<tr><td><b>${esc(n)}</b></td><td>${type==='cash'?'Cash':type==='bank'?'Benki':'E-Float'}</td><td>${money(opening(n))}</td><td>${money(movement(n))}</td><td><b>${money(current(n))}</b></td></tr>`).join('')}
 function renderHandovers(){document.getElementById('handoverRows').innerHTML=state.handovers.length?state.handovers.map(h=>`<tr><td>${esc(h.date)}</td><td>${esc(h.boss)}</td><td>${esc(h.staff)}</td><td>${money(h.given)}</td><td>${money(h.returned)}</td><td><b>${money(h.difference)}</b></td><td><button class="btn light small" onclick="printHandover('${h.id}')">Fungua / PDF</button></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Hakuna makabidhiano bado.</td></tr>'}
-function renderReport(){let t=totals();document.getElementById('rCash').textContent=money(t.cash);document.getElementById('rFloat').textContent=money(t.float);document.getElementById('rBank').textContent=money(t.bank);document.getElementById('rCount').textContent=state.transactions.length;document.getElementById('reportDate').textContent='Tarehe: '+new Date().toLocaleString('sw-TZ');document.getElementById('reportBalances').innerHTML=providers.map(([n])=>`<p>${esc(n)}: <b>${money(current(n))}</b></p>`).join('');let tx=state.transactions.filter(x=>x.date===dateNow());document.getElementById('reportTx').innerHTML=tx.length?`<table><tr><th>Aina</th><th>Akaunti</th><th>Kiasi</th><th>Rejea</th></tr>${tx.map(x=>`<tr><td>${esc(x.type)}</td><td>${esc(x.account)}</td><td>${money(x.amount)}</td><td>${esc(x.ref||'—')}</td></tr>`).join('')}</table>`:'<p>Hakuna miamala ya leo.</p>'}
+function renderReport(){
+  let t=totals();
+  document.getElementById('rCash').textContent=money(t.cash);
+  document.getElementById('rFloat').textContent=money(t.float);
+  document.getElementById('rBank').textContent=money(t.bank);
+  document.getElementById('rCount').textContent=state.transactions.length;
+  document.getElementById('reportDate').textContent='Tarehe: '+new Date().toLocaleString('sw-TZ');
+  
+  let biz = state.settings.business || 'HAGAI AGENT PRO';
+  let branch = state.settings.branch || '';
+  let phone = state.settings.phone || '';
+  let logo = state.settings.logo || '';
+
+  document.getElementById('printBizName').textContent = biz;
+  document.getElementById('printBranchName').textContent = branch + (phone ? ' | Simu: ' + phone : '');
+  document.getElementById('printLogoArea').innerHTML = logo ? `<img src="${esc(logo)}" style="max-height:50px;max-width:120px;object-fit:contain">` : '';
+
+  document.getElementById('reportBalances').innerHTML=providers.map(([n])=>`<p>${esc(n)}: <b>${money(current(n))}</b></p>`).join('');
+  let tx=state.transactions.filter(x=>x.date===dateNow());
+  document.getElementById('reportTx').innerHTML=tx.length?`<table><tr><th>Aina</th><th>Akaunti</th><th>Kiasi</th><th>Rejea</th></tr>${tx.map(x=>`<tr><td>${esc(x.type)}</td><td>${esc(x.account)}</td><td>${money(x.amount)}</td><td>${esc(x.ref||'—')}</td></tr>`).join('')}</table>`:'<p>Hakuna miamala ya leo.</p>';
+}
 function printReport(){document.querySelectorAll('.section').forEach(s=>s.classList.remove('printing'));document.getElementById('reports').classList.add('printing');window.print();document.getElementById('reports').classList.remove('printing')}
-function saveSettings(){state.settings.business=document.getElementById('businessName').value;state.settings.branch=document.getElementById('branchName').value;save();alert('Mipangilio imehifadhiwa.')}
+function saveSettings(){
+  state.settings.business=document.getElementById('businessName').value;
+  state.settings.branch=document.getElementById('branchName').value;
+  state.settings.phone=document.getElementById('bizPhone').value;
+  state.settings.logo=document.getElementById('logoUrl').value;
+  save();
+  alert('Mipangilio na Logo vimehifadhiwa vizuri.');
+}
 function exportBackup(){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hagai-agent-pro-backup-'+dateNow()+'.json';a.click();URL.revokeObjectURL(a.href)}
 document.getElementById('importFile').onchange=e=>{let file=e.target.files[0];if(!file)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.transactions||!x.balances||!x.handovers)throw Error();if(confirm('Kurejesha backup kutabadilisha taarifa zilizopo. Unaendelea?')){state=Object.assign(fresh(),x);save();alert('Backup imerejeshwa.')}}catch(err){alert('Faili la backup si sahihi.')}};r.readAsText(file);e.target.value=''};
 function clearAll(){if(prompt('Andika FUTA ili kuthibitisha kufuta taarifa zote:')==='FUTA'){state=fresh();save();alert('Taarifa za kifaa hiki zimefutwa.')}}
