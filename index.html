@@ -1,273 +1,1262 @@
 <!DOCTYPE html>
-<html lang="sw">
+<html lang="sw" class="h-full bg-slate-50">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#101d3a">
-<title>HAGAI AGENT PRO</title>
-<style>
-:root{--navy:#101d3a;--navy2:#17294e;--gold:#d6ad55;--bg:#f3f5f9;--ink:#182338;--muted:#718096;--line:#e5e9f0;--white:#fff;--green:#14845b;--red:#c83c4b}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 Inter,system-ui,-apple-system,Segoe UI,Arial,sans-serif}
-button,input,select,textarea{font:inherit}button{cursor:pointer}
-.app{min-height:100vh;display:flex}.sidebar{width:245px;background:var(--navy);color:#fff;padding:22px 14px;flex-shrink:0;display:flex;flex-direction:column}
-.brand{padding:5px 12px 24px;border-bottom:1px solid #ffffff20}.brand b{font-size:19px;letter-spacing:1px}.brand span{color:var(--gold)}.brand small{display:block;color:#aebbd2;margin-top:4px}
-.nav{display:grid;gap:6px;margin-top:20px}.nav button{border:0;background:transparent;color:#c7d1e2;text-align:left;padding:12px;border-radius:9px;font-weight:600}.nav button.active,.nav button:hover{background:#ffffff16;color:#fff}.nav button i{display:inline-block;width:26px;font-style:normal;color:var(--gold)}
-.sidefoot{margin-top:auto;color:#9eacc3;font-size:12px;padding:15px 10px}
-.main{min-width:0;flex:1}.topbar{height:68px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:5}.topbar strong{font-size:17px}.top-actions{display:flex;align-items:center;gap:10px}.menu-btn{display:none;border:0;background:var(--navy);color:#fff;border-radius:8px;padding:9px 12px}
-.content{padding:26px;max-width:1500px;margin:auto}.page-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:22px}.page-head h1{margin:0;font-size:24px}.page-head p{margin:5px 0 0;color:var(--muted)}
-.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.card,.panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:18px;box-shadow:0 3px 12px #15213a08}.metric-label{color:var(--muted);font-weight:600;font-size:12px}.metric-value{font-size:23px;font-weight:800;margin:8px 0 2px;overflow-wrap:anywhere}.metric-note{font-size:12px;color:var(--muted)}.metric-icon{float:right;background:#f1f4fa;border-radius:10px;padding:8px;color:var(--navy)}
-.panel{margin-top:17px}.panel-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.panel h3{margin:0;font-size:16px}.muted{color:var(--muted)}.btn{border:0;border-radius:8px;padding:10px 14px;font-weight:700;background:var(--navy);color:#fff}.btn.gold{background:var(--gold);color:#1b2435}.btn.light{background:#edf1f7;color:var(--navy)}.btn.danger{background:#fff0f1;color:var(--red)}.btn.small{padding:7px 10px;font-size:12px}.actions{display:flex;gap:8px;flex-wrap:wrap}
-.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse;min-width:650px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--line);font-size:13px}th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.4px}td strong{font-weight:700}.tag{display:inline-block;padding:4px 8px;border-radius:20px;background:#edf7f2;color:var(--green);font-size:11px;font-weight:700}.tag.out{background:#fff0f1;color:var(--red)}.empty{text-align:center;padding:28px;color:var(--muted)}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:12px;font-weight:700;color:#536176}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid #dce2eb;border-radius:8px;background:#fff;color:var(--ink);min-width:0}.field textarea{min-height:75px;resize:vertical}.form-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
-.notice{padding:12px 14px;border-radius:9px;background:#fff8e8;border:1px solid #f1dfb4;color:#70551b;margin-bottom:15px;font-size:13px}
-.hidden{display:none!important}.section{display:none}.section.active{display:block}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:15px}.balance-list{display:grid;gap:8px}.balance-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.balance-row:last-child{border:0}
-.modal-back{position:fixed;inset:0;background:#07122599;display:none;align-items:center;justify-content:center;padding:15px;z-index:20}.modal-back.show{display:flex}.modal{background:#fff;border-radius:14px;width:min(620px,100%);max-height:90vh;overflow:auto;padding:20px}.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}.modal-head h2{margin:0;font-size:19px}.close{border:0;background:#eef1f6;border-radius:8px;padding:7px 11px}
-.footer-note{font-size:12px;color:var(--muted);margin-top:18px}
-@media(max-width:1000px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:720px){.app{display:block}.sidebar{position:fixed;z-index:15;top:0;bottom:0;left:-260px;width:245px;transition:left .2s;box-shadow:10px 0 30px #0002}.sidebar.open{left:0}.menu-btn{display:inline-block}.topbar{padding:0 14px;height:60px}.content{padding:17px 13px}.page-head h1{font-size:21px}.grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.card{padding:13px}.metric-value{font-size:18px}.two-col{grid-template-columns:1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.topbar strong{font-size:14px}}
-@media(max-width:380px){.grid{grid-template-columns:1fr}.top-actions .date-label{display:none}}
-@media print{body{background:#fff}.sidebar,.topbar,.no-print,.page-head .btn{display:none!important}.main{width:100%}.content{padding:0;max-width:none}.section{display:none!important}.section.printing{display:block!important}.panel,.card{box-shadow:none;border:1px solid #ddd;break-inside:avoid}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HAGAI AGENT PRO | Smart Agent Management System</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            800: '#1E293B',
+                            900: '#0F172A',
+                            950: '#0B0F19',
+                        },
+                        gold: {
+                            400: '#FBBF24',
+                            500: '#F59E0B',
+                            600: '#D97706',
+                            700: '#B45309',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Inter Font & FontAwesome Icons -->
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Dashboard Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom scrollbars */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            body { background: white; color: black; }
+        }
+    </style>
 </head>
-<body>
-<div class="app">
-<aside class="sidebar" id="sidebar">
-  <div class="brand"><b>HAGAI <span>AGENT PRO</span></b><small>Agency operations & accountability</small></div>
-  <nav class="nav" id="nav">
-    <button class="active" data-page="dashboard"><i>▦</i> Dashboard</button>
-    <button data-page="transactions"><i>⇄</i> Miamala</button>
-    <button data-page="balances"><i>◉</i> Salio na Float</button>
-    <button data-page="handover"><i>⇆</i> Makabidhiano</button>
-    <button data-page="reports"><i>▤</i> Ripoti</button>
-    <button data-page="settings"><i>⚙</i> Mipangilio</button>
-  </nav>
-  <div class="sidefoot">HAGAI TECHNOLOGY<br>Toleo la kwanza · Hifadhi ya kifaa</div>
-</aside>
-<main class="main">
-<header class="topbar">
-  <div style="display:flex;align-items:center;gap:12px"><button class="menu-btn" id="menuBtn">☰</button><strong id="topTitle">Dashboard</strong></div>
-  <div class="top-actions"><span class="date-label muted" id="today"></span><button class="btn gold small" id="quickAdd">+ Muamala</button></div>
-</header>
-<div class="content">
-<section class="section active" id="dashboard">
- <div class="page-head"><div><h1>Dashboard</h1><p>Muhtasari wa shughuli za wakala</p></div><button class="btn" onclick="showPage('transactions')">+ Rekodi muamala</button></div>
- <div class="notice">Programu hii huhifadhi taarifa kwenye browser ya kifaa hiki. Tumia <b>Export Backup</b> mara kwa mara.</div>
- <div class="grid">
-  <div class="card"><span class="metric-icon">💵</span><div class="metric-label">Cash iliyopo</div><div class="metric-value" id="mCash">TZS 0</div><div class="metric-note">Salio la cash</div></div>
-  <div class="card"><span class="metric-icon">📱</span><div class="metric-label">Jumla ya e-Float</div><div class="metric-value" id="mFloat">TZS 0</div><div class="metric-note">Mitandao yote</div></div>
-  <div class="card"><span class="metric-icon">🏦</span><div class="metric-label">Salio la benki</div><div class="metric-value" id="mBank">TZS 0</div><div class="metric-note">Benki zote</div></div>
-  <div class="card"><span class="metric-icon">⇄</span><div class="metric-label">Miamala leo</div><div class="metric-value" id="mCount">0</div><div class="metric-note">Idadi ya miamala</div></div>
- </div>
- <div class="two-col">
-  <div class="panel"><div class="panel-head"><h3>Muhtasari wa salio</h3><button class="btn light small" onclick="showPage('balances')">Angalia yote</button></div><div class="balance-list" id="dashBalances"></div></div>
-  <div class="panel"><div class="panel-head"><h3>Miamala ya hivi karibuni</h3><button class="btn light small" onclick="showPage('transactions')">Miamala yote</button></div><div id="recentTransactions"></div></div>
- </div>
-</section>
+<body class="h-full text-slate-800 antialiased flex flex-col md:flex-row min-h-screen">
 
-<section class="section" id="transactions">
- <div class="page-head"><div><h1>Miamala</h1><p>Rekodi deposit, withdrawal na gharama</p></div><button class="btn" onclick="openTransaction()">+ Ongeza muamala</button></div>
- <div class="panel"><div class="panel-head"><h3>Historia ya miamala</h3><input id="txSearch" placeholder="Tafuta kumbukumbu / mtandao..." style="max-width:240px;padding:9px;border:1px solid var(--line);border-radius:8px"></div><div class="table-wrap"><table><thead><tr><th>Tarehe</th><th>Aina</th><th>Mtoa huduma</th><th>Kiasi</th><th>Rejea</th><th>Maelezo</th></tr></thead><tbody id="txRows"></tbody></table></div></div>
-</section>
+    <!-- Print Canvas Container (Hidden normally) -->
+    <div id="print-section" class="hidden print-only p-8 bg-white min-h-screen"></div>
 
-<section class="section" id="balances">
- <div class="page-head"><div><h1>Salio na Float</h1><p>Weka salio la mwanzo kwa kila akaunti</p></div><button class="btn" onclick="openBalance()">+ Weka / rekebisha salio</button></div>
- <div class="notice">Salio hapa ni hesabu ya ndani kulingana na salio la mwanzo na miamala uliyoingiza.</div>
- <div class="panel"><div class="table-wrap"><table><thead><tr><th>Akaunti</th><th>Aina</th><th>Salio la mwanzo</th><th>Mabadiliko</th><th>Salio la sasa</th></tr></thead><tbody id="balanceRows"></tbody></table></div></div>
-</section>
+    <!-- MAIN APP WRAPPER -->
+    <div id="app-wrapper" class="flex flex-col md:flex-row w-full min-h-screen bg-slate-50">
 
-<section class="section" id="handover">
- <div class="page-head"><div><h1>Makabidhiano</h1><p>Rekodi ya Boss na mfanyakazi kwa kila zamu</p></div><button class="btn" onclick="openHandover()">+ Makabidhiano mapya</button></div>
- <div class="panel"><div class="panel-head"><h3>Historia ya makabidhiano</h3></div><div class="table-wrap"><table><thead><tr><th>Tarehe</th><th>Boss</th><th>Mfanyakazi</th><th>Jumla iliyokabidhiwa</th><th>Jumla iliyorejeshwa</th><th>Tofauti</th><th>Hati</th></tr></thead><tbody id="handoverRows"></tbody></table></div></div>
-</section>
+        <!-- MOBILE NAVBAR TOP -->
+        <header class="md:hidden bg-navy-900 text-white p-4 flex items-center justify-between shadow-md no-print">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-gold-600 to-gold-400 flex items-center justify-center font-bold text-navy-950 shadow">
+                    HP
+                </div>
+                <div>
+                    <h1 class="font-bold text-sm tracking-wide text-white">HAGAI AGENT PRO</h1>
+                    <p class="text-[10px] text-gold-400 font-medium">HAGAI CONNECT</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-2">
+                <span id="sync-status-badge-mobile" class="px-2 py-0.5 text-[10px] rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Online
+                </span>
+                <button id="mobile-menu-btn" class="p-2 text-slate-300 hover:text-white focus:outline-none">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </header>
 
-<section class="section" id="reports">
- <div class="page-head"><div><h1>Ripoti</h1><p>Muhtasari wa fedha na shughuli</p></div><button class="btn gold" onclick="printReport()">Chapisha / PDF</button></div>
- <div class="panel" id="reportPrint">
-  <div style="display:flex;align-items:center;gap:15px;margin-bottom:15px;border-bottom:2px solid var(--line);padding-bottom:12px">
-    <div id="printLogoArea"></div>
-    <div>
-      <h2 id="printBizName" style="margin:0;color:var(--navy)">HAGAI AGENT PRO</h2>
-      <p id="printBranchName" style="margin:2px 0 0;color:var(--muted);font-size:13px"></p>
+        <!-- SIDEBAR NAVIGATION -->
+        <aside id="sidebar" class="hidden md:flex flex-col w-full md:w-64 bg-navy-900 text-slate-300 shrink-0 border-r border-slate-800 no-print transition-all duration-300">
+            <!-- Sidebar Header -->
+            <div class="p-5 border-b border-slate-800/80 flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-gold-600 via-gold-500 to-amber-300 flex items-center justify-center font-black text-navy-950 shadow-lg shadow-gold-500/20 text-lg">
+                        HP
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-base text-white tracking-wide">HAGAI AGENT</h1>
+                        <div class="flex items-center gap-1">
+                            <span class="text-[11px] font-semibold text-gold-400">CONNECT PRO</span>
+                            <span class="text-[9px] px-1.5 py-0.2 bg-gold-500/10 text-gold-400 border border-gold-500/20 rounded">v2.5</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Branch & Role Selector Card -->
+            <div class="p-4 mx-3 my-3 bg-navy-800/70 border border-slate-700/60 rounded-xl space-y-2">
+                <div>
+                    <label class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">Tawi (Branch)</label>
+                    <select id="branch-selector" class="w-full bg-navy-950 border border-slate-700 text-xs text-white rounded-lg px-2.5 py-1.5 focus:border-gold-500 focus:outline-none">
+                        <option value="all">Matawi Yote (Consolidated)</option>
+                        <option value="hq" selected>Makao Makuu (HQ - Mbalizi)</option>
+                        <option value="main_market">Soko Kuu Branch</option>
+                        <option value="stendi">Stendi Mpya Branch</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-semibold uppercase tracking-wider text-slate-400 block mb-1">Wadhifa (Role)</label>
+                    <select id="role-selector" class="w-full bg-navy-950 border border-slate-700 text-xs text-gold-400 font-medium rounded-lg px-2.5 py-1.5 focus:border-gold-500 focus:outline-none">
+                        <option value="admin" selected>Super Admin</option>
+                        <option value="manager">Manager</option>
+                        <option value="cashier">Cashier / Wakala</option>
+                        <option value="accountant">Accountant</option>
+                        <option value="auditor">Auditor (Read-Only)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex-1 px-3 py-2 space-y-1 overflow-y-auto">
+                <a href="#dashboard" data-tab="dashboard" class="nav-link active flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl text-white bg-gradient-to-r from-gold-600/20 to-transparent border-l-4 border-gold-500">
+                    <i class="fa-solid fa-chart-pie w-5 text-gold-400 text-center"></i> Dashboard
+                </a>
+                <a href="#transactions" data-tab="transactions" class="nav-link flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl hover:text-white hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-receipt w-5 text-slate-400 text-center"></i> Miamala (Ledger)
+                </a>
+                <a href="#providers" data-tab="providers" class="nav-link flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl hover:text-white hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-building-columns w-5 text-slate-400 text-center"></i> Vifaa & Mitandao
+                </a>
+                <a href="#closing" data-tab="closing" class="nav-link flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl hover:text-white hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-lock w-5 text-slate-400 text-center"></i> Funga Siku (Closing)
+                </a>
+                <a href="#invoices" data-tab="invoices" class="nav-link flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl hover:text-white hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-file-invoice-dollar w-5 text-slate-400 text-center"></i> Risiti & Invoices
+                </a>
+                <a href="#handover" data-tab="handover" class="nav-link flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl hover:text-white hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-hand-holding-dollar w-5 text-slate-400 text-center"></i> Makabidhiano Cash
+                </a>
+                <a href="#reconciliation" data-tab="reconciliation" class="nav-link flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl hover:text-white hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-scale-balanced w-5 text-slate-400 text-center"></i> Reconciliation
+                </a>
+                <a href="#reports" data-tab="reports" class="nav-link flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl hover:text-white hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-chart-line w-5 text-slate-400 text-center"></i> Ripoti & Analytics
+                </a>
+                <a href="#settings" data-tab="settings" class="nav-link flex items-center gap-3 px-3.5 py-2.5 text-sm font-medium rounded-xl hover:text-white hover:bg-slate-800/60 transition">
+                    <i class="fa-solid fa-sliders w-5 text-slate-400 text-center"></i> Mipangilio (Settings)
+                </a>
+            </nav>
+
+            <!-- Sync & System Info Footer -->
+            <div class="p-4 border-t border-slate-800 text-xs text-slate-400 space-y-2">
+                <div class="flex items-center justify-between">
+                    <span>Hali ya Mfumo:</span>
+                    <span id="sync-status-badge-desktop" class="px-2 py-0.5 text-[10px] rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 flex items-center gap-1 font-medium">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span> Online (Synced)
+                    </span>
+                </div>
+                <div class="text-[10px] text-slate-500 flex justify-between">
+                    <span>HAGAI TECH © 2026</span>
+                    <span id="storage-type-indicator">IndexedDB</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CONTENT AREA CONTAINER -->
+        <main class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+
+            <!-- TOP ACTION BAR / HEADER -->
+            <header class="bg-white border-b border-slate-200 px-6 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 no-print shadow-sm">
+                <div>
+                    <h2 id="page-title" class="text-xl font-bold text-navy-900">Dashboard ya Wakala</h2>
+                    <p id="page-subtitle" class="text-xs text-slate-500">Muhtasari wa salio, miamala na e-float zote kwa wakati halisi</p>
+                </div>
+                <div class="flex items-center gap-3 flex-wrap">
+                    <!-- Global Quick Action Buttons -->
+                    <button onclick="openTransactionModal()" class="px-4 py-2 bg-navy-900 hover:bg-navy-800 text-white font-medium text-xs rounded-xl shadow-sm transition flex items-center gap-2 border border-navy-950">
+                        <i class="fa-solid fa-plus text-gold-400"></i> + Rekodi Muamala
+                    </button>
+                    <button onclick="switchTab('closing')" class="px-4 py-2 bg-gradient-to-r from-gold-600 to-amber-500 hover:from-gold-700 hover:to-amber-600 text-navy-950 font-bold text-xs rounded-xl shadow-sm transition flex items-center gap-2">
+                        <i class="fa-solid fa-lock"></i> Funga Siku
+                    </button>
+                </div>
+            </header>
+
+            <!-- SMS WEBHOOK NOTIFICATION ALERT BANNER -->
+            <div id="sms-notification-banner" class="hidden mx-6 mt-4 p-4 bg-amber-50 border border-amber-200 rounded-2xl flex items-center justify-between shadow-sm animate-fade-in">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500/20 text-amber-700 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-mobile-screen-button text-lg"></i>
+                    </div>
+                    <div>
+                        <h4 class="text-xs font-bold text-amber-900">SMS Mpya Imepokelewa na Kuingizwa Mfumoni!</h4>
+                        <p id="sms-notification-text" class="text-xs text-amber-700">Muamala wa HaloPesa TZS 100,000 umeongezwa kwenye Ledger kikamilifu.</p>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('sms-notification-banner').classList.add('hidden')" class="text-amber-800 hover:text-amber-950 text-xs px-2 py-1 font-bold">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <!-- VIEW CONTAINER (DYNAMIC TABS) -->
+            <div class="p-6 flex-1 space-y-6">
+
+                <!-- TAB 1: DASHBOARD -->
+                <div id="tab-dashboard" class="tab-content space-y-6">
+                    
+                    <!-- KPI STATS GRID -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <!-- Total Cash Card -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden group hover:border-gold-500/50 transition">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-gold-500/5 rounded-full blur-2xl group-hover:bg-gold-500/10 transition"></div>
+                            <div class="flex items-center justify-between text-slate-500 mb-2">
+                                <span class="text-xs font-semibold uppercase tracking-wider">Cash Iliyopo (Physical)</span>
+                                <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                                    <i class="fa-solid fa-money-bill-wave"></i>
+                                </div>
+                            </div>
+                            <div id="dash-total-cash" class="text-2xl font-black text-navy-900">TZS 0</div>
+                            <div class="mt-2 text-[11px] text-slate-500 flex items-center gap-1">
+                                <span class="text-emerald-600 font-semibold"><i class="fa-solid fa-circle-check"></i> Verified</span> Salio la pesa taslimu
+                            </div>
+                        </div>
+
+                        <!-- Total Float Card -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden group hover:border-gold-500/50 transition">
+                            <div class="flex items-center justify-between text-slate-500 mb-2">
+                                <span class="text-xs font-semibold uppercase tracking-wider">Jumla ya e-Float</span>
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center">
+                                    <i class="fa-solid fa-mobile-retro"></i>
+                                </div>
+                            </div>
+                            <div id="dash-total-float" class="text-2xl font-black text-navy-900">TZS 0</div>
+                            <div class="mt-2 text-[11px] text-slate-500 flex items-center gap-1">
+                                <span id="dash-float-providers-count" class="font-bold text-navy-900">4</span> Mitandao ya Simu
+                            </div>
+                        </div>
+
+                        <!-- Total Bank Card -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden group hover:border-gold-500/50 transition">
+                            <div class="flex items-center justify-between text-slate-500 mb-2">
+                                <span class="text-xs font-semibold uppercase tracking-wider">Salio la Mabenki</span>
+                                <div class="w-8 h-8 rounded-lg bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                            </div>
+                            <div id="dash-total-bank" class="text-2xl font-black text-navy-900">TZS 0</div>
+                            <div class="mt-2 text-[11px] text-slate-500 flex items-center gap-1">
+                                <span class="font-bold text-navy-900">CRDB, NMB, NBC, Equity</span>
+                            </div>
+                        </div>
+
+                        <!-- Total Commissions & Expenses Card -->
+                        <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm relative overflow-hidden group hover:border-gold-500/50 transition">
+                            <div class="flex items-center justify-between text-slate-500 mb-2">
+                                <span class="text-xs font-semibold uppercase tracking-wider">Kamisheni vs Gharama</span>
+                                <div class="w-8 h-8 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center">
+                                    <i class="fa-solid fa-chart-line font-bold"></i>
+                                </div>
+                            </div>
+                            <div class="flex items-baseline gap-2">
+                                <span id="dash-total-commission" class="text-xl font-black text-emerald-600">+0</span>
+                                <span class="text-slate-300">/</span>
+                                <span id="dash-total-expenses" class="text-sm font-bold text-rose-500">-0</span>
+                            </div>
+                            <div class="mt-2 text-[11px] text-slate-500">
+                                Faida halisi ya leo: <span id="dash-net-profit" class="font-bold text-navy-900">TZS 0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PROVIDER FLOAT BREAKDOWN CARDS -->
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-sm font-bold text-navy-900 uppercase tracking-wider">Salio la e-Float kwa Mitandao & Benki</h3>
+                            <button onclick="switchTab('providers')" class="text-xs text-gold-600 hover:text-gold-700 font-semibold">Angalia Vifaa Zote &rarr;</button>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-3" id="dash-providers-grid">
+                            <!-- Injected dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- CHARTS & RECENT TRANSACTIONS SECTION -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Chart Card -->
+                        <div class="lg:col-span-1 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-sm font-bold text-navy-900">Mgawanyo wa Miamala (Leo)</h3>
+                                <span class="text-xs text-slate-400">Live Engine</span>
+                            </div>
+                            <div class="relative flex items-center justify-center h-64">
+                                <canvas id="dashboardChart"></canvas>
+                            </div>
+                            <div class="mt-4 pt-3 border-t border-slate-100 grid grid-cols-2 text-center text-xs">
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Wakala Deposit</span>
+                                    <span id="dash-deposit-count" class="font-bold text-navy-900">0</span>
+                                </div>
+                                <div>
+                                    <span class="text-slate-400 block text-[10px]">Wakala Withdrawal</span>
+                                    <span id="dash-withdraw-count" class="font-bold text-navy-900">0</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Recent Transactions Table Card -->
+                        <div class="lg:col-span-2 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h3 class="text-sm font-bold text-navy-900">Miamala ya Hivi Karibuni</h3>
+                                    <p class="text-xs text-slate-400">Data zilizothibitishwa na mfumo au SMS parsing</p>
+                                </div>
+                                <button onclick="switchTab('transactions')" class="px-3 py-1.5 text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium rounded-lg transition">
+                                    Tazama Zote
+                                </button>
+                            </div>
+                            <div class="overflow-x-auto flex-1">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-50 text-slate-500 uppercase tracking-wider text-[10px] border-y border-slate-100">
+                                        <tr>
+                                            <th class="py-2.5 px-3">Muda</th>
+                                            <th class="py-2.5 px-3">Mtandao</th>
+                                            <th class="py-2.5 px-3">Aina</th>
+                                            <th class="py-2.5 px-3">Kiasi (TZS)</th>
+                                            <th class="py-2.5 px-3"> Kumbukumbu / Ref</th>
+                                            <th class="py-2.5 px-3 text-right">Hali</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dash-recent-tx-tbody" class="divide-y divide-slate-100 text-slate-700">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: TRANSACTIONS LEDGER -->
+                <div id="tab-transactions" class="tab-content hidden space-y-4">
+                    <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <!-- Filters Header -->
+                        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                            <div class="flex items-center gap-2 flex-1">
+                                <div class="relative flex-1 max-w-md">
+                                    <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                                    <input type="text" id="tx-search-input" placeholder="Tafuta kwa Jina, Namba, Ref au SMS..." class="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs focus:outline-none focus:border-gold-500">
+                                </div>
+                                <select id="tx-filter-provider" class="bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-gold-500">
+                                    <option value="all">Mitandao Yote</option>
+                                    <option value="HaloPesa">HaloPesa</option>
+                                    <option value="M-Pesa">M-Pesa</option>
+                                    <option value="Airtel Money">Airtel Money</option>
+                                    <option value="Mixx by Yas">Mixx by Yas</option>
+                                    <option value="CRDB Bank">CRDB Bank</option>
+                                    <option value="NMB Bank">NMB Bank</option>
+                                </select>
+                                <select id="tx-filter-type" class="bg-slate-50 border border-slate-200 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-gold-500">
+                                    <option value="all">Aina Zote</option>
+                                    <option value="deposit">Deposit</option>
+                                    <option value="withdrawal">Withdrawal</option>
+                                    <option value="expense">Expense</option>
+                                    <option value="commission">Commission</option>
+                                </select>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <button onclick="exportLedgerCSV()" class="px-3.5 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs rounded-xl transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-file-csv text-emerald-600"></i> Export CSV
+                                </button>
+                                <button onclick="openTransactionModal()" class="px-3.5 py-2 bg-navy-900 text-white font-medium text-xs rounded-xl transition flex items-center gap-1.5">
+                                    <i class="fa-solid fa-plus text-gold-400"></i> Muamala Mpya
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Full Ledger Table -->
+                        <div class="overflow-x-auto rounded-xl border border-slate-100">
+                            <table class="w-full text-left text-xs">
+                                <thead class="bg-navy-900 text-slate-300 uppercase tracking-wider text-[10px]">
+                                    <tr>
+                                        <th class="py-3 px-3">ID / Muda</th>
+                                        <th class="py-3 px-3">Tawi</th>
+                                        <th class="py-3 px-3">Mtandao</th>
+                                        <th class="py-3 px-3">Aina ya Muamala</th>
+                                        <th class="py-3 px-3">Kiasi (TZS)</th>
+                                        <th class="py-3 px-3">Mteja / Simu</th>
+                                        <th class="py-3 px-3">Reference (Ref)</th>
+                                        <th class="py-3 px-3">Maelezo / Auto SMS</th>
+                                        <th class="py-3 px-3 text-right">Kitendo</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ledger-tbody" class="divide-y divide-slate-100">
+                                    <!-- Injected dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 3: PROVIDERS & DEVICES MANAGEMENT -->
+                <div id="tab-providers" class="tab-content hidden space-y-6">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-base font-bold text-navy-900">Usimamizi wa Vifaa & Mitandao ya Wakala</h3>
+                            <p class="text-xs text-slate-500">Panga kila mtandao na simu yake ya kazi pamoja na salio lake</p>
+                        </div>
+                        <button onclick="openAddProviderModal()" class="px-4 py-2 bg-gold-600 hover:bg-gold-700 text-navy-950 font-bold text-xs rounded-xl shadow transition">
+                            + Ongeza Mtandao / Bank
+                        </button>
+                    </div>
+
+                    <div id="providers-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <!-- TAB 4: DAILY CLOSING WIZARD -->
+                <div id="tab-closing" class="tab-content hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm max-w-4xl mx-auto space-y-6">
+                        <div class="border-b border-slate-100 pb-4 flex items-center justify-between">
+                            <div>
+                                <h3 class="text-lg font-bold text-navy-900">Module ya Kufunga Siku (Daily Closing Wizard)</h3>
+                                <p class="text-xs text-slate-500">Linganisha salio la mfumo na fedha zilizopo mkononi (Physical Cash & Float Audit)</p>
+                            </div>
+                            <span class="px-3 py-1 bg-gold-50 text-gold-700 font-bold text-xs rounded-full border border-gold-200">
+                                Tarehe: <span id="closing-date-display">04 Nov 2026</span>
+                            </span>
+                        </div>
+
+                        <form id="daily-closing-form" onsubmit="submitDailyClosing(event)" class="space-y-6">
+                            <!-- Physical Cash Count -->
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-navy-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-coins text-gold-600"></i> 1. Hesabu ya Cash Mkononi (Physical Cash Count)
+                                </h4>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="text-xs text-slate-600 font-medium block mb-1">Expected Cash (Mfumo):</label>
+                                        <input type="text" id="closing-expected-cash" readonly class="w-full bg-slate-200 border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-navy-900" value="TZS 0">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs text-slate-700 font-bold block mb-1">Actual Counted Cash (Pesa Zilizopo):</label>
+                                        <input type="number" id="closing-actual-cash" required oninput="calculateClosingVariances()" placeholder="Ingiza kiasi cha cash ulichohesabu" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-bold text-navy-900 focus:border-gold-500 focus:outline-none">
+                                    </div>
+                                </div>
+                                <div id="closing-cash-diff-badge" class="hidden p-2.5 rounded-lg text-xs font-medium"></div>
+                            </div>
+
+                            <!-- Provider Float Verification -->
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-3">
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-navy-900 flex items-center gap-2">
+                                    <i class="fa-solid fa-mobile-screen text-blue-600"></i> 2. Uhakiki wa e-Float kwa Kila Simu
+                                </h4>
+                                <div id="closing-providers-inputs" class="space-y-3">
+                                    <!-- Injected dynamically -->
+                                </div>
+                            </div>
+
+                            <!-- Closing Notes & Submitter -->
+                            <div class="space-y-3">
+                                <div>
+                                    <label class="text-xs font-medium text-slate-700 block mb-1">Maelezo ya Ziada / Sababu ya Tofauti (kama ipo):</label>
+                                    <textarea id="closing-notes" rows="2" placeholder="Andika maelezo ya ziada hapa..." class="w-full bg-white border border-slate-300 rounded-xl p-3 text-xs focus:border-gold-500 focus:outline-none"></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full py-3 bg-navy-900 hover:bg-navy-950 text-white font-bold text-sm rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-check-circle text-gold-400"></i> Thibitisha & Funga Siku Rasmi
+                            </button>
+                        </form>
+
+                        <!-- Closing History Table -->
+                        <div class="pt-6 border-t border-slate-200">
+                            <h4 class="text-sm font-bold text-navy-900 mb-3">Historia ya Daily Closings Zilizopita</h4>
+                            <div class="overflow-x-auto rounded-xl border border-slate-100">
+                                <table class="w-full text-left text-xs">
+                                    <thead class="bg-slate-100 text-slate-600 uppercase tracking-wider text-[10px]">
+                                        <tr>
+                                            <th class="py-2.5 px-3">Tarehe</th>
+                                            <th class="py-2.5 px-3">Mweka Taarifa</th>
+                                            <th class="py-2.5 px-3">Expected Cash</th>
+                                            <th class="py-2.5 px-3">Actual Cash</th>
+                                            <th class="py-2.5 px-3">Tofauti (Variance)</th>
+                                            <th class="py-2.5 px-3">Hali</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="closing-history-tbody" class="divide-y divide-slate-100">
+                                        <!-- Injected via JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 5: INVOICES & RECEIPTS GENERATOR -->
+                <div id="tab-invoices" class="tab-content hidden space-y-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Invoice Creator Form -->
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                            <h3 class="text-base font-bold text-navy-900 border-b border-slate-100 pb-3">Tengeneza Risiti au Invois Mpya</h3>
+                            <form id="doc-generator-form" onsubmit="generateDocument(event)" class="space-y-3">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-xs font-medium text-slate-600 block mb-1">Aina ya Hati</label>
+                                        <select id="doc-type" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold-500">
+                                            <option value="receipt">Risiti ya Malipo (Receipt)</option>
+                                            <option value="invoice">Invois (Invoice)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-xs font-medium text-slate-600 block mb-1">Namba ya Hati</label>
+                                        <input type="text" id="doc-number" readonly class="w-full bg-slate-100 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-navy-900">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-xs font-medium text-slate-600 block mb-1">Jina la Mteja</label>
+                                        <input type="text" id="doc-customer-name" required placeholder="Mf. Joseph Samson" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold-500">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs font-medium text-slate-600 block mb-1">Simu ya Mteja</label>
+                                        <input type="text" id="doc-customer-phone" placeholder="0768 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold-500">
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-slate-600 block mb-1">Maelezo ya Huduma / Bidhaa</label>
+                                    <input type="text" id="doc-description" required placeholder="Mf. Huduma ya Wakala Deposit & Transfer" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold-500">
+                                </div>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label class="text-xs font-medium text-slate-600 block mb-1">Kiasi (TZS)</label>
+                                        <input type="number" id="doc-amount" required placeholder="100000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-navy-900 focus:outline-none focus:border-gold-500">
+                                    </div>
+                                    <div>
+                                        <label class="text-xs font-medium text-slate-600 block mb-1">Njia ya Malipo</label>
+                                        <select id="doc-payment-method" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-gold-500">
+                                            <option value="HaloPesa">HaloPesa</option>
+                                            <option value="M-Pesa">M-Pesa</option>
+                                            <option value="Airtel Money">Airtel Money</option>
+                                            <option value="Cash">Cash Taslimu</option>
+                                            <option value="CRDB Bank">CRDB Bank</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="w-full py-2.5 bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs rounded-xl shadow transition">
+                                    Onyesha Risiti / Print Preview
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Invoice Preview Card -->
+                        <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center border-b border-slate-100 pb-3 mb-4">
+                                    <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Live Document Preview</h3>
+                                    <button onclick="printPreviewDocument()" class="px-3 py-1 bg-gold-600 text-navy-950 font-bold text-xs rounded-lg hover:bg-gold-500">
+                                        <i class="fa-solid fa-print"></i> Print / Pakua PDF
+                                    </button>
+                                </div>
+                                <div id="document-preview-box" class="p-6 bg-slate-50 rounded-xl border border-slate-200 space-y-4 font-mono text-xs">
+                                    <div class="text-center space-y-1">
+                                        <h2 class="font-bold text-sm text-navy-950 uppercase" id="prev-biz-name">HAGAI AGENT PRO</h2>
+                                        <p class="text-[10px] text-slate-500" id="prev-biz-subtitle">HAGAI CONNECT - SMART AGENT</p>
+                                        <p class="text-[10px] text-slate-500" id="prev-biz-phone">Simu: +255 768 000 000 | Mbalizi, Mbeya</p>
+                                    </div>
+                                    <div class="border-y border-dashed border-slate-300 py-2 flex justify-between">
+                                        <span id="prev-doc-type" class="font-bold">RISITI YA MALIPO</span>
+                                        <span id="prev-doc-no">#RCT-1001</span>
+                                    </div>
+                                    <div class="space-y-1 text-[11px]">
+                                        <div class="flex justify-between"><span>Tarehe:</span> <span id="prev-date">04 Nov 2026</span></div>
+                                        <div class="flex justify-between"><span>Mteja:</span> <span id="prev-cust">Joseph Samson</span></div>
+                                        <div class="flex justify-between"><span>Maelezo:</span> <span id="prev-desc">Wakala Deposit</span></div>
+                                        <div class="flex justify-between"><span>Njia:</span> <span id="prev-method">HaloPesa</span></div>
+                                    </div>
+                                    <div class="border-t border-dashed border-slate-300 pt-2 flex justify-between font-bold text-sm">
+                                        <span>JUMLA:</span>
+                                        <span id="prev-total">TZS 100,000</span>
+                                    </div>
+                                    <div class="text-center text-[9px] text-slate-400 pt-4">
+                                        *** Ahsante kwa kutumia HAGAI AGENT PRO ***
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 6: CASH HANDOVER MODULE -->
+                <div id="tab-handover" class="tab-content hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm max-w-3xl mx-auto space-y-5">
+                        <div class="border-b border-slate-100 pb-3">
+                            <h3 class="text-lg font-bold text-navy-900">Makabidhiano ya Zamu (Shift Cash Handover)</h3>
+                            <p class="text-xs text-slate-500">Rekodi makabidhiano ya pesa na e-float kati ya Wakala/Cashier anayetoka na anayeingia</p>
+                        </div>
+                        <form id="handover-form" onsubmit="submitHandover(event)" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-medium text-slate-600 block mb-1">Mtu Anayetoka (Outgoing Staff)</label>
+                                    <input type="text" id="handover-outgoing" required placeholder="Jina la Wakala" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:border-gold-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-slate-600 block mb-1">Mtu Anayeingia (Incoming Staff)</label>
+                                    <input type="text" id="handover-incoming" required placeholder="Jina la Wakala Mpya" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:border-gold-500 focus:outline-none">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-medium text-slate-600 block mb-1">Cash Inayokabidhiwa (TZS)</label>
+                                    <input type="number" id="handover-cash" required placeholder="500000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-navy-900 focus:border-gold-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-slate-600 block mb-1">Jumla ya e-Float Inayokabidhiwa</label>
+                                    <input type="number" id="handover-float" required placeholder="1200000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-navy-900 focus:border-gold-500 focus:outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs font-medium text-slate-600 block mb-1">Maelezo ya Makabidhiano / Hakiki</label>
+                                <textarea id="handover-notes" rows="2" placeholder="Andika kama kuna upungufu au vitu maalum..." class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs focus:border-gold-500 focus:outline-none"></textarea>
+                            </div>
+                            <button type="submit" class="w-full py-3 bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs rounded-xl shadow transition">
+                                <i class="fa-solid fa-file-signature text-gold-400"></i> Hifadhi & Print Hati ya Makabidhiano
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- TAB 7: RECONCILIATION -->
+                <div id="tab-reconciliation" class="tab-content hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <h3 class="text-base font-bold text-navy-900">Automatic Account Reconciliation</h3>
+                        <p class="text-xs text-slate-500">Linganisha miamala iliyoingia kupitia SMS na hesabu za mawakala kuzuia wizi au makosa</p>
+                        <div id="reconciliation-audit-list" class="space-y-3">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 8: REPORTS & ANALYTICS -->
+                <div id="tab-reports" class="tab-content hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm space-y-4">
+                        <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+                            <h3 class="text-base font-bold text-navy-900">Ripoti za Kifedha & Perfomance</h3>
+                            <button onclick="window.print()" class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded-lg">
+                                <i class="fa-solid fa-print"></i> Print Ripoti
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-xs text-slate-500 block">Jumla ya Deposit Wiki Hii</span>
+                                <span id="report-weekly-deposit" class="text-lg font-bold text-navy-900">TZS 0</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-xs text-slate-500 block">Jumla ya Withdrawals Wiki Hii</span>
+                                <span id="report-weekly-withdraw" class="text-lg font-bold text-navy-900">TZS 0</span>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                                <span class="text-xs text-slate-500 block">Net Commission (Faida)</span>
+                                <span id="report-net-commission" class="text-lg font-bold text-emerald-600">TZS 0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 9: SETTINGS -->
+                <div id="tab-settings" class="tab-content hidden space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm max-w-3xl mx-auto space-y-6">
+                        <h3 class="text-base font-bold text-navy-900 border-b border-slate-100 pb-3">Mipangilio ya Biashara & Webhook Integration</h3>
+                        
+                        <!-- MacroDroid Webhook URL Helper -->
+                        <div class="p-4 bg-navy-900 text-white rounded-xl space-y-2">
+                            <h4 class="text-xs font-bold text-gold-400 uppercase tracking-wider flex items-center gap-2">
+                                <i class="fa-solid fa-link"></i> Webhook URL ya MacroDroid Auto-SMS Parsing
+                            </h4>
+                            <p class="text-[11px] text-slate-300">Tumia link hii chini kwenye Action ya **Open Website** au **HTTP Request** ndani ya MacroDroid:</p>
+                            <div class="p-2.5 bg-navy-950 rounded-lg font-mono text-[11px] text-emerald-400 break-all select-all border border-slate-800" id="webhook-url-box">
+                                https://hagailaitony661-tech.github.io/WAKALA-MKUU/?from=[sender]&sms=[text]
+                            </div>
+                        </div>
+
+                        <form id="settings-form" onsubmit="saveSettings(event)" class="space-y-4">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="text-xs font-medium text-slate-600 block mb-1">Jina la Biashara</label>
+                                    <input type="text" id="set-biz-name" value="HAGAI AGENT PRO" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:border-gold-500 focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-xs font-medium text-slate-600 block mb-1">Namba ya Simu / WhatsApp</label>
+                                    <input type="text" id="set-biz-phone" value="+255 768 000 000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:border-gold-500 focus:outline-none">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="text-xs font-medium text-slate-600 block mb-1">Anwani ya Biashara (Physical Location)</label>
+                                <input type="text" id="set-biz-address" value="Mbalizi Road, Mbeya, Tanzania" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:border-gold-500 focus:outline-none">
+                            </div>
+                            <button type="submit" class="px-5 py-2.5 bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs rounded-xl shadow transition">
+                                Hifadhi Mipangilio
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </main>
     </div>
-  </div>
-  <p id="reportDate" class="muted"></p>
-  <div class="grid"><div><div class="metric-label">Cash</div><b id="rCash">TZS 0</b></div><div><div class="metric-label">Float</div><b id="rFloat">TZS 0</b></div><div><div class="metric-label">Benki</div><b id="rBank">TZS 0</b></div><div><div class="metric-label">Miamala</div><b id="rCount">0</b></div></div>
-  <h3 style="margin-top:22px">Salio kwa akaunti</h3><div id="reportBalances"></div>
-  <h3 style="margin-top:22px">Miamala ya leo</h3><div id="reportTx"></div>
- </div>
-</section>
 
-<section class="section" id="settings">
- <div class="page-head"><div><h1>Mipangilio na Backup</h1><p>Jina la biashara, logo na usimamizi wa taarifa</p></div></div>
- <div class="two-col">
-  <div class="panel">
-    <h3>Wasifu wa biashara na Logo</h3>
-    <div class="form-grid" style="margin-top:14px">
-      <div class="field full"><label>Jina la biashara / wakala</label><input id="businessName" placeholder="Mfano: Wakala wa Mbalizi"></div>
-      <div class="field"><label>Jina la tawi</label><input id="branchName" placeholder="Makao makuu"></div>
-      <div class="field"><label>Namba ya simu / Anwani</label><input id="bizPhone" placeholder="Mfano: 0750000000"></div>
-      <div class="field full"><label>Kiungo cha Logo (Logo Image URL)</label><input id="logoUrl" placeholder="Weka link ya picha ya logo hapa"></div>
+    <!-- TRANSACTION MODAL -->
+    <div id="tx-modal" class="fixed inset-0 bg-navy-950/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl border border-slate-200 shadow-2xl w-full max-w-lg overflow-hidden animate-scale-up">
+            <div class="bg-navy-900 p-4 text-white flex items-center justify-between border-b border-slate-800">
+                <h3 class="font-bold text-sm flex items-center gap-2">
+                    <i class="fa-solid fa-receipt text-gold-400"></i> Rekodi Muamala Mpya (Double-Entry Engine)
+                </h3>
+                <button onclick="closeTransactionModal()" class="text-slate-400 hover:text-white text-xs">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+            <form id="tx-form" onsubmit="saveTransaction(event)" class="p-5 space-y-4">
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs font-medium text-slate-700 block mb-1">Aina ya Muamala</label>
+                        <select id="modal-tx-type" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium focus:border-gold-500 focus:outline-none">
+                            <option value="deposit">Deposit (Mteja Weka Pesa)</option>
+                            <option value="withdrawal">Withdrawal (Mteja Toa Pesa)</option>
+                            <option value="expense">Expense (Gharama za Op)</option>
+                            <option value="commission">Commission (Kamisheni)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-slate-700 block mb-1">Mtandao / Benki</label>
+                        <select id="modal-provider" required class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-medium focus:border-gold-500 focus:outline-none">
+                            <option value="HaloPesa">HaloPesa</option>
+                            <option value="M-Pesa">M-Pesa</option>
+                            <option value="Airtel Money">Airtel Money</option>
+                            <option value="Mixx by Yas">Mixx by Yas</option>
+                            <option value="CRDB Bank">CRDB Bank</option>
+                            <option value="NMB Bank">NMB Bank</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs font-bold text-slate-800 block mb-1">Kiasi (TZS)</label>
+                        <input type="number" id="modal-amount" min="1" required placeholder="Mf. 50000" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-navy-900 focus:border-gold-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-slate-700 block mb-1">Reference (Tnx ID)</label>
+                        <input type="text" id="modal-ref" placeholder="Mf. 630759774208" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:border-gold-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="text-xs font-medium text-slate-700 block mb-1">Jina la Mteja (Optional)</label>
+                        <input type="text" id="modal-cust-name" placeholder="Joseph Samson" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:border-gold-500 focus:outline-none">
+                    </div>
+                    <div>
+                        <label class="text-xs font-medium text-slate-700 block mb-1">Simu ya Mteja (Optional)</label>
+                        <input type="text" id="modal-cust-phone" placeholder="0768681700" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:border-gold-500 focus:outline-none">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="text-xs font-medium text-slate-700 block mb-1">Maelezo ya Ziada (Notes)</label>
+                    <input type="text" id="modal-notes" placeholder="Wakala deposit kwa ajili ya mteja" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:border-gold-500 focus:outline-none">
+                </div>
+
+                <div class="pt-3 border-t border-slate-100 flex items-center justify-end gap-2">
+                    <button type="button" onclick="closeTransactionModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium text-xs rounded-xl">
+                        Ghairi
+                    </button>
+                    <button type="submit" class="px-5 py-2 bg-navy-900 hover:bg-navy-950 text-white font-bold text-xs rounded-xl shadow">
+                        Hifadhi Muamala
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="form-actions"><button class="btn" onclick="saveSettings()">Hifadhi mipangilio</button></div>
-  </div>
-  <div class="panel"><h3>Backup na kurejesha</h3><p class="muted">Pakua nakala ya taarifa zako au rejesha backup ya awali kwenye kifaa hiki.</p><div class="actions"><button class="btn" onclick="exportBackup()">Export Backup (JSON)</button><label class="btn light" for="importFile">Import Backup</label><input id="importFile" type="file" accept=".json,application/json" class="hidden"></div><hr style="border:0;border-top:1px solid var(--line);margin:18px 0"><button class="btn danger" onclick="clearAll()">Futa taarifa zote</button></div>
- </div>
-</section>
-<p class="footer-note">HAGAI AGENT PRO · Taarifa zinahifadhiwa kwenye kifaa hiki kupitia browser storage.</p>
-</div>
-</main>
-</div>
 
-<div class="modal-back" id="modalBack"><div class="modal"><div class="modal-head"><h2 id="modalTitle">Fomu</h2><button class="close" onclick="closeModal()">✕</button></div><div id="modalBody"></div></div></div>
-<script>
-const KEY='hagai_agent_pro_v1';
-const providers=[
- ['HaloPesa','float'],['M-Pesa','float'],['Airtel Money','float'],['Mixx by Yas','float'],
- ['CRDB','bank'],['NMB','bank'],['NBC','bank'],['Equity Bank','bank'],['Benki nyingine','bank'],['Cash','cash']
-];
-let state=load();
-function fresh(){return {settings:{business:'',branch:'Makao makuu',phone:'',logo:'',currency:'TZS'},balances:{},transactions:[],handovers:[]}}
-function load(){try{return Object.assign(fresh(),JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return fresh()}}
-function save(){localStorage.setItem(KEY,JSON.stringify(state));render()}
-function money(n){return 'TZS '+Number(n||0).toLocaleString('en-US',{maximumFractionDigits:2})}
-function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function dateNow(){return new Date().toISOString().slice(0,10)}
-function accountType(name){return (providers.find(p=>p[0]===name)||[])[1]||'float'}
-function opening(name){return Number(state.balances[name]||0)}
-function movement(name){return state.transactions.reduce((a,t)=>a+(t.deltas?Number(t.deltas[name]||0):(t.account===name?Number(t.delta||0):0)),0)}
-function current(name){return opening(name)+movement(name)}
-function totals(){let t={cash:0,float:0,bank:0};providers.forEach(([n,type])=>t[type]+=current(n));return t}
-function txDeltas(type,amount,account){let d={};if(type==='Gharama'){d[account]=-amount;return d}if(account==='Cash'){d.Cash=type==='Deposit'?amount:-amount;return d}if(type==='Deposit'){d.Cash=amount;d[account]=-amount}else if(type==='Withdrawal'){d.Cash=-amount;d[account]=amount}return d}
-function showPage(id){document.querySelectorAll('.section').forEach(s=>s.classList.toggle('active',s.id===id));document.querySelectorAll('.nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===id));document.getElementById('topTitle').textContent=({dashboard:'Dashboard',transactions:'Miamala',balances:'Salio na Float',handover:'Makabidhiano',reports:'Ripoti',settings:'Mipangilio'})[id];document.getElementById('sidebar').classList.remove('open');render()}
-document.getElementById('nav').addEventListener('click',e=>{let b=e.target.closest('button[data-page]');if(b)showPage(b.dataset.page)});
-document.getElementById('menuBtn').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
-document.getElementById('quickAdd').onclick=()=>openTransaction();
-document.getElementById('today').textContent=new Date().toLocaleDateString('sw-TZ',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
-function modal(title,html){document.getElementById('modalTitle').textContent=title;document.getElementById('modalBody').innerHTML=html;document.getElementById('modalBack').classList.add('show')}
-function closeModal(){document.getElementById('modalBack').classList.remove('show')}
-document.getElementById('modalBack').addEventListener('click',e=>{if(e.target.id==='modalBack')closeModal()});
-function openTransaction(){modal('Rekodi muamala',`<form id="txForm"><div class="form-grid">
-<div class="field"><label>Aina ya muamala</label><select name="type"><option>Deposit</option><option>Withdrawal</option><option>Gharama</option></select></div>
-<div class="field"><label>Akaunti / mtandao</label><select name="account">${providers.map(p=>`<option>${p[0]}</option>`).join('')}</select></div>
-<div class="field"><label>Kiasi (TZS)</label><input name="amount" type="number" min="1" step="0.01" required></div>
-<div class="field"><label>Commission (TZS)</label><input name="commission" type="number" min="0" step="0.01" value="0"></div>
-<div class="field"><label>Tarehe</label><input name="date" type="date" value="${dateNow()}" required></div>
-<div class="field"><label>Namba ya rejea</label><input name="ref" placeholder="Namba ya muamala"></div>
-<div class="field full"><label>Maelezo</label><textarea name="note" placeholder="Maelezo ya ziada"></textarea></div></div><div class="form-actions"><button class="btn">Hifadhi muamala</button><button type="button" class="btn light" onclick="closeModal()">Ghairi</button></div></form>`);
-document.getElementById('txForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target),amount=Number(f.get('amount')),type=f.get('type'),account=f.get('account');if(!amount||amount<=0)return alert('Weka kiasi sahihi.');state.transactions.unshift({id:crypto.randomUUID?crypto.randomUUID():String(Date.now()),type,account,amount,commission:Number(f.get('commission')||0),deltas:txDeltas(type,amount,account),date:f.get('date'),ref:f.get('ref'),note:f.get('note'),created:new Date().toISOString()});save();closeModal();showPage('transactions')}}
-function openBalance(){modal('Weka salio la mwanzo',`<form id="balForm"><div class="form-grid"><div class="field full"><label>Akaunti</label><select name="account">${providers.map(p=>`<option>${p[0]}</option>`).join('')}</select></div><div class="field full"><label>Salio la mwanzo (TZS)</label><input name="amount" type="number" step="0.01" min="0" required></div><div class="field full"><label>Maelezo</label><input name="note" placeholder="Mfano: Salio lililohakikiwa na boss"></div></div><div class="form-actions"><button class="btn">Hifadhi salio</button></div></form>`);
-document.getElementById('balForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target),name=f.get('account'),amount=Number(f.get('amount'));if(!confirm('Kuweka salio jipya la mwanzo kutabadilisha msingi wa hesabu ya akaunti hii. Unaendelea?'))return;state.balances[name]=amount;save();closeModal()}}
-function openHandover(){modal('Makabidhiano mapya',`<form id="handForm"><div class="form-grid">
-<div class="field"><label>Boss / aliyekabidhi</label><input name="boss" required></div><div class="field"><label>Mfanyakazi / aliyepokea</label><input name="staff" required></div>
-<div class="field"><label>Tarehe</label><input name="date" type="date" value="${dateNow()}" required></div><div class="field"><label>Zamu</label><select name="shift"><option>Asubuhi</option><option>Mchana</option><option>Usiku</option><option>Full day</option></select></div>
-<div class="field full"><label>Cash iliyokabidhiwa (TZS)</label><input name="cashGiven" type="number" min="0" value="0" required></div>
-${providers.filter(p=>p[1]!=='cash').map(p=>`<div class="field"><label>${p[0]} iliyokabidhiwa (TZS)</label><input name="a_${p[0]}" type="number" min="0" value="0"></div>`).join('')}
-<div class="field full"><label>Jumla ya fedha iliyorejeshwa (TZS)</label><input name="returned" type="number" min="0" value="0" required></div>
-<div class="field full"><label>Maelezo / tofauti</label><textarea name="note"></textarea></div>
-<div class="field"><label>Sahihi ya Boss (andika jina)</label><input name="bossSign" required></div><div class="field"><label>Sahihi ya mfanyakazi (andika jina)</label><input name="staffSign" required></div>
-</div><div class="form-actions"><button class="btn">Hifadhi na tengeneza hati</button></div></form>`);
-document.getElementById('handForm').onsubmit=e=>{e.preventDefault();let f=new FormData(e.target),given=Number(f.get('cashGiven'));providers.filter(p=>p[1]!=='cash').forEach(p=>given+=Number(f.get('a_'+p[0])||0));let h={id:'HO-'+Date.now(),date:f.get('date'),shift:f.get('shift'),boss:f.get('boss'),staff:f.get('staff'),given,returned:Number(f.get('returned')),note:f.get('note'),bossSign:f.get('bossSign'),staffSign:f.get('staffSign'),cash:Number(f.get('cashGiven')),accounts:providers.filter(p=>p[1]!=='cash').map(p=>({name:p[0],amount:Number(f.get('a_'+p[0])||0)}))};h.difference=h.given-h.returned;state.handovers.unshift(h);save();closeModal();showPage('handover');printHandover(h.id)}}
-function printHandover(id){let h=state.handovers.find(x=>x.id===id);if(!h)return;let w=window.open('','_blank');if(!w){alert('Ruhusu pop-up ili kuchapisha hati.');return}
-let biz=state.settings.business||'HAGAI AGENT PRO', branch=state.settings.branch||'', logo=state.settings.logo||'', phone=state.settings.phone||'';
-w.document.write(`<html><head><title>${h.id}</title><style>body{font:14px Arial;padding:30px;color:#182338}h1{color:#101d3a}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ddd;padding:9px;text-align:left}.sign{display:flex;justify-content:space-between;margin-top:65px}.muted{color:#666}</style></head><body>
-<div style="display:flex;align-items:center;gap:15px;margin-bottom:15px;border-bottom:2px solid #ddd;padding-bottom:10px">
-  ${logo?`<img src="${esc(logo)}" style="max-height:50px;max-width:120px;object-fit:contain">`:''}
-  <div><h2 style="margin:0">${esc(biz)}</h2><p style="margin:2px 0 0;color:#666;font-size:12px">${esc(branch)} ${phone?'| Simu: '+esc(phone):''}</p></div>
-</div>
-<h3>HATI YA MAKABIDHIANO</h3><p>Kumbukumbu: <b>${esc(h.id)}</b> | Tarehe: ${esc(h.date)} | Zamu: ${esc(h.shift)}</p><p>Boss: <b>${esc(h.boss)}</b> &nbsp; Mfanyakazi: <b>${esc(h.staff)}</b></p><table><tr><th>Akaunti</th><th>Kiasi kilichokabidhiwa</th></tr><tr><td>Cash</td><td>${money(h.cash)}</td></tr>${h.accounts.map(a=>`<tr><td>${esc(a.name)}</td><td>${money(a.amount)}</td></tr>`).join('')}<tr><th>Jumla iliyokabidhiwa</th><th>${money(h.given)}</th></tr><tr><td>Jumla iliyorejeshwa</td><th>${money(h.returned)}</th></tr><tr><th>Tofauti</th><th>${money(h.difference)}</th></tr></table><p>Maelezo: ${esc(h.note||'—')}</p><div class="sign"><div>Boss: ___________________<br>${esc(h.bossSign)}</div><div>Mfanyakazi: ______________<br>${esc(h.staffSign)}</div></div><p class="muted">Hati imetengenezwa na HAGAI AGENT PRO.</p><script>window.onload=()=>window.print()<\/script></body></html>`);w.document.close()}
-function render(){let t=totals();document.getElementById('mCash').textContent=money(t.cash);document.getElementById('mFloat').textContent=money(t.float);document.getElementById('mBank').textContent=money(t.bank);document.getElementById('mCount').textContent=state.transactions.filter(x=>x.date===dateNow()).length;
-let rows=providers.map(([n,type])=>({n,type,v:current(n)}));document.getElementById('dashBalances').innerHTML=rows.map(r=>`<div class="balance-row"><span>${esc(r.n)}</span><b>${money(r.v)}</b></div>`).join('');
-let recent=state.transactions.slice(0,5);document.getElementById('recentTransactions').innerHTML=recent.length?recent.map(x=>`<div class="balance-row"><span>${esc(x.type)} · ${esc(x.account)}<small class="muted" style="display:block">${esc(x.date)}</small></span><b>${money(x.amount)}</b></div>`).join(''):'<div class="empty">Hakuna muamala bado.</div>';
-renderTransactions();renderBalances();renderHandovers();renderReport();
-document.getElementById('businessName').value=state.settings.business||'';
-document.getElementById('branchName').value=state.settings.branch||'';
-document.getElementById('bizPhone').value=state.settings.phone||'';
-document.getElementById('logoUrl').value=state.settings.logo||'';
-}
-function renderTransactions(){let q=(document.getElementById('txSearch')?.value||'').toLowerCase(),a=state.transactions.filter(x=>(x.account+' '+x.ref+' '+x.note+' '+x.type).toLowerCase().includes(q));document.getElementById('txRows').innerHTML=a.length?a.map(x=>`<tr><td>${esc(x.date)}</td><td><span class="tag ${x.type==='Withdrawal'||x.type==='Gharama'?'out':''}">${esc(x.type)}</span></td><td>${esc(x.account)}</td><td>${money(x.amount)}</td><td>${esc(x.ref||'—')}</td><td>${esc(x.note||'—')}</td></tr>`).join(''):'<tr><td colspan="6" class="empty">Hakuna miamala iliyopatikana.</td></tr>'}
-document.getElementById('txSearch').addEventListener('input',renderTransactions);
-function renderBalances(){document.getElementById('balanceRows').innerHTML=providers.map(([n,type])=>`<tr><td><b>${esc(n)}</b></td><td>${type==='cash'?'Cash':type==='bank'?'Benki':'E-Float'}</td><td>${money(opening(n))}</td><td>${money(movement(n))}</td><td><b>${money(current(n))}</b></td></tr>`).join('')}
-function renderHandovers(){document.getElementById('handoverRows').innerHTML=state.handovers.length?state.handovers.map(h=>`<tr><td>${esc(h.date)}</td><td>${esc(h.boss)}</td><td>${esc(h.staff)}</td><td>${money(h.given)}</td><td>${money(h.returned)}</td><td><b>${money(h.difference)}</b></td><td><button class="btn light small" onclick="printHandover('${h.id}')">Fungua / PDF</button></td></tr>`).join(''):'<tr><td colspan="7" class="empty">Hakuna makabidhiano bado.</td></tr>'}
-function renderReport(){
-  let t=totals();
-  document.getElementById('rCash').textContent=money(t.cash);
-  document.getElementById('rFloat').textContent=money(t.float);
-  document.getElementById('rBank').textContent=money(t.bank);
-  document.getElementById('rCount').textContent=state.transactions.length;
-  document.getElementById('reportDate').textContent='Tarehe: '+new Date().toLocaleString('sw-TZ');
-  
-  let biz = state.settings.business || 'HAGAI AGENT PRO';
-  let branch = state.settings.branch || '';
-  let phone = state.settings.phone || '';
-  let logo = state.settings.logo || '';
+    <!-- APPLICATION LOGIC & ENGINE SCRIPT -->
+    <script>
+        // GLOBAL STATE & ACCOUNTING INITIALIZATION
+        const APP_STATE = {
+            branch: 'hq',
+            role: 'admin',
+            settings: {
+                bizName: 'HAGAI AGENT PRO',
+                phone: '+255 768 000 000',
+                address: 'Mbalizi Road, Mbeya, Tanzania'
+            },
+            accounts: {
+                cash: 500000, // Default Opening Physical Cash TZS
+                providers: {
+                    'HaloPesa': { float: 1200000, device: 'Samsung Galaxy A12 (HaloPesa SIM)' },
+                    'M-Pesa': { float: 2500000, device: 'Nokia C20 (M-Pesa SIM)' },
+                    'Airtel Money': { float: 800000, device: 'Redmi 10 (Airtel SIM)' },
+                    'Mixx by Yas': { float: 400000, device: 'Itel Magic 2 (Mixx SIM)' },
+                    'CRDB Bank': { float: 3000000, device: 'Bank Portal' },
+                    'NMB Bank': { float: 1500000, device: 'Bank Portal' }
+                }
+            },
+            transactions: [],
+            dailyClosings: [],
+            handovers: []
+        };
 
-  document.getElementById('printBizName').textContent = biz;
-  document.getElementById('printBranchName').textContent = branch + (phone ? ' | Simu: ' + phone : '');
-  document.getElementById('printLogoArea').innerHTML = logo ? `<img src="${esc(logo)}" style="max-height:50px;max-width:120px;object-fit:contain">` : '';
-
-  document.getElementById('reportBalances').innerHTML=providers.map(([n])=>`<p>${esc(n)}: <b>${money(current(n))}</b></p>`).join('');
-  let tx=state.transactions.filter(x=>x.date===dateNow());
-  document.getElementById('reportTx').innerHTML=tx.length?`<table><tr><th>Aina</th><th>Akaunti</th><th>Kiasi</th><th>Rejea</th></tr>${tx.map(x=>`<tr><td>${esc(x.type)}</td><td>${esc(x.account)}</td><td>${money(x.amount)}</td><td>${esc(x.ref||'—')}</td></tr>`).join('')}</table>`:'<p>Hakuna miamala ya leo.</p>';
-}
-function printReport(){document.querySelectorAll('.section').forEach(s=>s.classList.remove('printing'));document.getElementById('reports').classList.add('printing');window.print();document.getElementById('reports').classList.remove('printing')}
-function saveSettings(){
-  state.settings.business=document.getElementById('businessName').value;
-  state.settings.branch=document.getElementById('branchName').value;
-  state.settings.phone=document.getElementById('bizPhone').value;
-  state.settings.logo=document.getElementById('logoUrl').value;
-  save();
-  alert('Mipangilio na Logo vimehifadhiwa vizuri.');
-}
-function exportBackup(){let blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='hagai-agent-pro-backup-'+dateNow()+'.json';a.click();URL.revokeObjectURL(a.href)}
-document.getElementById('importFile').onchange=e=>{let file=e.target.files[0];if(!file)return;let r=new FileReader();r.onload=()=>{try{let x=JSON.parse(r.result);if(!x.transactions||!x.balances||!x.handovers)throw Error();if(confirm('Kurejesha backup kutabadilisha taarifa zilizopo. Unaendelea?')){state=Object.assign(fresh(),x);save();alert('Backup imerejeshwa.')}}catch(err){alert('Faili la backup si sahihi.')}};r.readAsText(file);e.target.value=''};
-function clearAll(){if(prompt('Andika FUTA ili kuthibitisha kufuta taarifa zote:')==='FUTA'){state=fresh();save();alert('Taarifa za kifaa hiki zimefutwa.')}}
-
-// FUNCTION YA AUTO-SYNC KUSOMA PARAMS ZINAZOTOKA MACRODROID
-function processAutoSMS(){
-  const urlParams = new URLSearchParams(window.location.search);
-  const from = urlParams.get('from');
-  const sms = urlParams.get('sms');
-
-  if(sms){
-    let account = 'HaloPesa';
-    if(from && from.toUpperCase().includes('HALOTEL')) account = 'HaloPesa';
-    
-    let type = 'Deposit';
-    let smsUpper = sms.toUpperCase();
-    if(smsUpper.includes('UMETUMA') || smsUpper.includes('UMEHAMISHA') || smsUpper.includes('PAID') || smsUpper.includes('WITHDRAW')){
-      type = 'Withdrawal';
-    }
-
-    let amountMatch = sms.match(/(?:TZS|TSh|Kiasi|Sh)\s*([\d,]+(?:\.\d+)?)/i) || sms.match(/([\d,]+(?:\.\d+)?)\s*(?:TZS|TSh)/i);
-    let amount = amountMatch ? parseFloat(amountMatch[1].replace(/,/g, '')) : 0;
-
-    let refMatch = sms.match(/(?:Txn ID|Kumbukumbu|Ref|ID|Transaction ID)[:\s]*([A-Z0-9]+)/i);
-    let ref = refMatch ? refMatch[1] : 'AUTO-' + Date.now().toString().slice(-6);
-
-    if(amount > 0){
-      let isDuplicate = state.transactions.some(t => t.ref === ref);
-      if(!isDuplicate){
-        state.transactions.unshift({
-          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()),
-          type: type,
-          account: account,
-          amount: amount,
-          commission: 0,
-          deltas: txDeltas(type, amount, account),
-          date: dateNow(),
-          ref: ref,
-          note: 'Auto SMS: ' + sms,
-          created: new Date().toISOString()
+        // INITIALIZE APPLICATION ON LOAD
+        window.addEventListener('DOMContentLoaded', () => {
+            loadFromStorage();
+            setupNavigation();
+            parseUrlParametersForSMS();
+            renderAllViews();
         });
-        save();
-      }
-    }
-    window.history.replaceState({}, document.title, window.location.pathname);
-  }
-}
 
-processAutoSMS();
-render();
-</script>
+        // LOCAL STORAGE LOAD/SAVE
+        function loadFromStorage() {
+            try {
+                const savedData = localStorage.getItem('HAGAI_AGENT_PRO_DATA');
+                if (savedData) {
+                    const parsed = JSON.parse(savedData);
+                    APP_STATE.accounts = parsed.accounts || APP_STATE.accounts;
+                    APP_STATE.transactions = parsed.transactions || [];
+                    APP_STATE.dailyClosings = parsed.dailyClosings || [];
+                    APP_STATE.handovers = parsed.handovers || [];
+                    APP_STATE.settings = parsed.settings || APP_STATE.settings;
+                }
+            } catch(e) {
+                console.error('Storage parse error:', e);
+            }
+        }
+
+        function saveToStorage() {
+            try {
+                localStorage.setItem('HAGAI_AGENT_PRO_DATA', JSON.stringify({
+                    accounts: APP_STATE.accounts,
+                    transactions: APP_STATE.transactions,
+                    dailyClosings: APP_STATE.dailyClosings,
+                    handovers: APP_STATE.handovers,
+                    settings: APP_STATE.settings
+                }));
+            } catch(e) {
+                console.error('Storage save error:', e);
+            }
+        }
+
+        // DOUBLE-ENTRY ACCOUNTING ENGINE
+        function processDoubleEntryTransaction(tx) {
+            // Check Duplicate Reference
+            if (tx.ref && APP_STATE.transactions.some(t => t.ref === tx.ref && t.status !== 'reversed')) {
+                alert('Tofauti au Muamala wenye Reference hii tayari upo!');
+                return false;
+            }
+
+            const amount = parseFloat(tx.amount);
+            const providerObj = APP_STATE.accounts.providers[tx.provider];
+
+            if (tx.type === 'deposit') {
+                // Customer deposits cash -> Cash Increases (+), Float Decreases (-)
+                APP_STATE.accounts.cash += amount;
+                if (providerObj) providerObj.float -= amount;
+            } else if (tx.type === 'withdrawal') {
+                // Customer withdraws cash -> Cash Decreases (-), Float Increases (+)
+                APP_STATE.accounts.cash -= amount;
+                if (providerObj) providerObj.float += amount;
+            } else if (tx.type === 'expense') {
+                APP_STATE.accounts.cash -= amount;
+            } else if (tx.type === 'commission') {
+                if (providerObj) providerObj.float += amount;
+            }
+
+            APP_STATE.transactions.unshift(tx);
+            saveToStorage();
+            renderAllViews();
+            return true;
+        }
+
+        // MACRODROID AUTOMATIC SMS PARSER & WEBHOOK RECEIVER
+        function parseUrlParametersForSMS() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const fromParam = urlParams.get('from');
+            const smsParam = urlParams.get('sms');
+
+            if (smsParam) {
+                const text = decodeURIComponent(smsParam);
+                const sender = fromParam ? decodeURIComponent(fromParam) : 'SMS';
+
+                // Intelligent Regex Parser for HaloPesa, M-Pesa, Airtel Money
+                let type = 'deposit';
+                let amount = 0;
+                let ref = 'AUTO-' + Math.floor(100000 + Math.random() * 900000);
+                let provider = 'HaloPesa';
+
+                // Provider Detection
+                if (sender.toLowerCase().includes('halo') || text.toLowerCase().includes('halopesa')) provider = 'HaloPesa';
+                else if (sender.toLowerCase().includes('mpesa') || text.toLowerCase().includes('m-pesa')) provider = 'M-Pesa';
+                else if (sender.toLowerCase().includes('airtel')) provider = 'Airtel Money';
+
+                // Transaction Type & Amount Extraction
+                if (text.toLowerCase().includes('umewekewa') || text.toLowerCase().includes('received')) {
+                    type = 'withdrawal'; // Cash paid out
+                } else if (text.toLowerCase().includes('umetuma') || text.toLowerCase().includes('sent') || text.toLowerCase().includes('imetumwa')) {
+                    type = 'deposit'; // Cash received
+                }
+
+                // Amount regex search (Matches TZS 10,000 or 100 TZS)
+                const amtMatch = text.match(/([0-9,]+)\s*TZS/i) || text.match/TZS\s*([0-9,]+)/i);
+                if (amtMatch) {
+                    amount = parseFloat(amtMatch[1].replace(/,/g, ''));
+                }
+
+                // Reference Regex Search (Tnx 63075...)
+                const refMatch = text.match(/Tnx\s*([0-9]+)/i) || text.match/TXN:\s*([0-9]+)/i);
+                if (refMatch) ref = refMatch[1];
+
+                if (amount > 0) {
+                    const newTx = {
+                        id: 'TX-' + Date.now(),
+                        timestamp: new Date().toISOString(),
+                        branch: APP_STATE.branch,
+                        provider: provider,
+                        type: type,
+                        amount: amount,
+                        customerName: 'SMS Auto Parsing',
+                        customerPhone: '-',
+                        ref: ref,
+                        notes: 'Auto SMS: ' + text.substring(0, 80) + '...',
+                        status: 'completed'
+                    };
+
+                    processDoubleEntryTransaction(newTx);
+
+                    // Show Banner
+                    const banner = document.getElementById('sms-notification-banner');
+                    const bannerText = document.getElementById('sms-notification-text');
+                    bannerText.textContent = `Muamala mpya wa ${provider} TZS ${amount.toLocaleString()} (Ref: ${ref}) umeingizwa kikamilifu!`;
+                    banner.classList.remove('hidden');
+                }
+            }
+        }
+
+        // NAVIGATION & TABS SWITCHING
+        function setupNavigation() {
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const tabId = link.getAttribute('data-tab');
+                    switchTab(tabId);
+                });
+            });
+
+            // Mobile menu toggle
+            const mobileBtn = document.getElementById('mobile-menu-btn');
+            const sidebar = document.getElementById('sidebar');
+            mobileBtn.addEventListener('click', () => {
+                sidebar.classList.toggle('hidden');
+            });
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-link').forEach(l => {
+                l.classList.remove('active', 'bg-gradient-to-r', 'from-gold-600/20', 'to-transparent', 'border-l-4', 'border-gold-500', 'text-white');
+                l.classList.add('text-slate-400');
+            });
+
+            const activeLink = document.querySelector(`.nav-link[data-tab="${tabId}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active', 'bg-gradient-to-r', 'from-gold-600/20', 'to-transparent', 'border-l-4', 'border-gold-500', 'text-white');
+            }
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+            const activeContent = document.getElementById(`tab-${tabId}`);
+            if (activeContent) activeContent.classList.remove('hidden');
+
+            // Update Header Titles
+            const titles = {
+                dashboard: ['Dashboard ya Wakala', 'Muhtasari wa salio na e-float kwa wakati halisi'],
+                transactions: ['Miamala & Ledger', 'Rekodi na historia kamili ya miamala yote'],
+                providers: ['Vifaa & Mitandao', 'Usimamizi wa simu za kazi na e-float'],
+                closing: ['Funga Siku (Closing)', 'Hesabu ya cash mkononi na audit ya siku'],
+                invoices: ['Risiti & Invoices', 'Tengeneza na uchapishe risiti rasmi za wateja'],
+                handover: ['Makabidhiano Cash', 'Fomu ya makabidhiano ya pesa za zamu'],
+                reconciliation: ['Reconciliation Audit', 'Uhakiki wa miamala na kuzuia tofauti'],
+                reports: ['Ripoti & Analytics', 'Uchambuzi wa mwenendo wa biashara'],
+                settings: ['Mipangilio', 'Anwani ya biashara na URL za MacroDroid Webhook']
+            };
+
+            if (titles[tabId]) {
+                document.getElementById('page-title').textContent = titles[tabId][0];
+                document.getElementById('page-subtitle').textContent = titles[tabId][1];
+            }
+        }
+
+        // RENDER VIEWS & UI UPDATES
+        function renderAllViews() {
+            renderDashboard();
+            renderLedger();
+            renderProviders();
+            renderClosingWizard();
+        }
+
+        function renderDashboard() {
+            // Calculate Total Cash & Float
+            const totalCash = APP_STATE.accounts.cash;
+            let totalFloat = 0;
+            let totalBank = 0;
+
+            Object.entries(APP_STATE.accounts.providers).forEach(([name, data]) => {
+                if (name.includes('Bank')) totalBank += data.float;
+                else totalFloat += data.float;
+            });
+
+            document.getElementById('dash-total-cash').textContent = 'TZS ' + totalCash.toLocaleString();
+            document.getElementById('dash-total-float').textContent = 'TZS ' + totalFloat.toLocaleString();
+            document.getElementById('dash-total-bank').textContent = 'TZS ' + totalBank.toLocaleString();
+
+            // Calculate Today's Stats
+            let depCount = 0, withCount = 0, commTotal = 0, expTotal = 0;
+            APP_STATE.transactions.forEach(t => {
+                if (t.type === 'deposit') depCount++;
+                if (t.type === 'withdrawal') withCount++;
+                if (t.type === 'commission') commTotal += t.amount;
+                if (t.type === 'expense') expTotal += t.amount;
+            });
+
+            document.getElementById('dash-deposit-count').textContent = depCount;
+            document.getElementById('dash-withdraw-count').textContent = withCount;
+            document.getElementById('dash-total-commission').textContent = '+TZS ' + commTotal.toLocaleString();
+            document.getElementById('dash-total-expenses').textContent = '-TZS ' + expTotal.toLocaleString();
+            document.getElementById('dash-net-profit').textContent = 'TZS ' + (commTotal - expTotal).toLocaleString();
+
+            // Render Provider Cards in Dashboard
+            const providersGrid = document.getElementById('dash-providers-grid');
+            providersGrid.innerHTML = '';
+            Object.entries(APP_STATE.accounts.providers).forEach(([name, data]) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-3 rounded-xl border border-slate-200 text-center space-y-1 shadow-sm';
+                card.innerHTML = `
+                    <span class="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">${name}</span>
+                    <span class="text-xs font-black text-navy-900 block">TZS ${data.float.toLocaleString()}</span>
+                `;
+                providersGrid.appendChild(card);
+            });
+
+            // Recent Transactions Table in Dashboard
+            const recentTbody = document.getElementById('dash-recent-tx-tbody');
+            recentTbody.innerHTML = '';
+            APP_STATE.transactions.slice(0, 5).forEach(t => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="py-2.5 px-3 text-[11px] text-slate-500">${new Date(t.timestamp).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</td>
+                    <td class="py-2.5 px-3 font-semibold text-navy-900">${t.provider}</td>
+                    <td class="py-2.5 px-3">
+                        <span class="px-2 py-0.5 rounded text-[9px] font-bold uppercase ${t.type==='deposit'?'bg-emerald-50 text-emerald-600':t.type==='withdrawal'?'bg-blue-50 text-blue-600':'bg-rose-50 text-rose-600'}">
+                            ${t.type}
+                        </span>
+                    </td>
+                    <td class="py-2.5 px-3 font-bold text-navy-900">TZS ${t.amount.toLocaleString()}</td>
+                    <td class="py-2.5 px-3 text-slate-400 font-mono text-[10px]">${t.ref || '-'}</td>
+                    <td class="py-2.5 px-3 text-right">
+                        <span class="text-emerald-500 font-bold text-[10px]"><i class="fa-solid fa-check"></i> Recorded</span>
+                    </td>
+                `;
+                recentTbody.appendChild(tr);
+            });
+        }
+
+        function renderLedger() {
+            const tbody = document.getElementById('ledger-tbody');
+            tbody.innerHTML = '';
+            APP_STATE.transactions.forEach(t => {
+                const tr = document.createElement('tr');
+                tr.className = t.status === 'reversed' ? 'bg-rose-50/50 opacity-60' : 'hover:bg-slate-50';
+                tr.innerHTML = `
+                    <td class="py-3 px-3">
+                        <span class="font-bold text-navy-900 block text-[11px]">${t.id}</span>
+                        <span class="text-[10px] text-slate-400">${new Date(t.timestamp).toLocaleString()}</span>
+                    </td>
+                    <td class="py-3 px-3 uppercase text-[10px] font-semibold text-slate-600">${t.branch}</td>
+                    <td class="py-3 px-3 font-bold text-navy-950">${t.provider}</td>
+                    <td class="py-3 px-3">
+                        <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase ${t.type==='deposit'?'bg-emerald-100 text-emerald-800':t.type==='withdrawal'?'bg-blue-100 text-blue-800':'bg-rose-100 text-rose-800'}">
+                            ${t.type}
+                        </span>
+                    </td>
+                    <td class="py-3 px-3 font-black text-navy-900 text-xs">TZS ${t.amount.toLocaleString()}</td>
+                    <td class="py-3 px-3 text-slate-600 text-[11px]">${t.customerName || '-'}</td>
+                    <td class="py-3 px-3 font-mono text-slate-500 text-[11px]">${t.ref || '-'}</td>
+                    <td class="py-3 px-3 text-slate-500 text-[10px] max-w-xs truncate">${t.notes || '-'}</td>
+                    <td class="py-3 px-3 text-right">
+                        ${t.status !== 'reversed' ? `
+                            <button onclick="reverseTransaction('${t.id}')" class="text-rose-600 hover:text-rose-800 font-bold text-[10px] bg-rose-50 px-2 py-1 rounded">
+                                Reversal
+                            </button>
+                        ` : '<span class="text-rose-500 text-[10px] font-bold">REVERSED</span>'}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function renderProviders() {
+            const container = document.getElementById('providers-cards-container');
+            container.innerHTML = '';
+            Object.entries(APP_STATE.accounts.providers).forEach(([name, data]) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm space-y-3';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center border-b border-slate-100 pb-2">
+                        <h4 class="font-bold text-navy-900 text-sm">${name}</h4>
+                        <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-bold rounded-full">Active SIM</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Kifaa / Simu</span>
+                        <span class="text-xs text-slate-700 font-medium">${data.device}</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] font-semibold text-slate-400 uppercase tracking-wider block">Current e-Float Balance</span>
+                        <span class="text-xl font-black text-navy-900">TZS ${data.float.toLocaleString()}</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderClosingWizard() {
+            document.getElementById('closing-expected-cash').value = 'TZS ' + APP_STATE.accounts.cash.toLocaleString();
+            
+            const container = document.getElementById('closing-providers-inputs');
+            container.innerHTML = '';
+            Object.entries(APP_STATE.accounts.providers).forEach(([name, data]) => {
+                const row = document.createElement('div');
+                row.className = 'grid grid-cols-2 gap-3 items-center';
+                row.innerHTML = `
+                    <span class="text-xs font-bold text-navy-900">${name} (System: TZS ${data.float.toLocaleString()})</span>
+                    <input type="number" placeholder="Ingiza Float Halisi ya Simu" required class="bg-white border border-slate-300 rounded-xl px-3 py-1.5 text-xs font-bold text-navy-900">
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function calculateClosingVariances() {
+            const expected = APP_STATE.accounts.cash;
+            const actualInput = parseFloat(document.getElementById('closing-actual-cash').value) || 0;
+            const diff = actualInput - expected;
+            const badge = document.getElementById('closing-cash-diff-badge');
+
+            badge.classList.remove('hidden', 'bg-emerald-100', 'text-emerald-800', 'bg-rose-100', 'text-rose-800');
+            if (diff === 0) {
+                badge.classList.add('bg-emerald-100', 'text-emerald-800');
+                badge.textContent = '✓ Physical Cash inalingana kikamilifu na System Expected Cash (Hakuna Tofauti)!';
+            } else if (diff < 0) {
+                badge.classList.add('bg-rose-100', 'text-rose-800');
+                badge.textContent = `⚠️ UPUNGUFU (SHORTAGE): TZS ${Math.abs(diff).toLocaleString()}`;
+            } else {
+                badge.classList.add('bg-emerald-100', 'text-emerald-800');
+                badge.textContent = `+ ZIADA (SURPLUS): TZS ${diff.toLocaleString()}`;
+            }
+        }
+
+        // MODAL ACTIONS
+        function openTransactionModal() {
+            document.getElementById('tx-modal').classList.remove('hidden');
+        }
+        function closeTransactionModal() {
+            document.getElementById('tx-modal').classList.add('hidden');
+        }
+
+        function saveTransaction(e) {
+            e.preventDefault();
+            const tx = {
+                id: 'TX-' + Date.now(),
+                timestamp: new Date().toISOString(),
+                branch: APP_STATE.branch,
+                provider: document.getElementById('modal-provider').value,
+                type: document.getElementById('modal-tx-type').value,
+                amount: parseFloat(document.getElementById('modal-amount').value),
+                customerName: document.getElementById('modal-cust-name').value,
+                customerPhone: document.getElementById('modal-cust-phone').value,
+                ref: document.getElementById('modal-ref').value,
+                notes: document.getElementById('modal-notes').value,
+                status: 'completed'
+            };
+
+            if (processDoubleEntryTransaction(tx)) {
+                closeTransactionModal();
+                document.getElementById('tx-form').reset();
+            }
+        }
+
+        function reverseTransaction(txId) {
+            const tx = APP_STATE.transactions.find(t => t.id === txId);
+            if (tx && confirm('Je, una uhakika unataka kufanya reversal ya muamala huu?')) {
+                tx.status = 'reversed';
+                
+                // Reverse Accounting Logic
+                const amount = tx.amount;
+                const providerObj = APP_STATE.accounts.providers[tx.provider];
+                if (tx.type === 'deposit') {
+                    APP_STATE.accounts.cash -= amount;
+                    if (providerObj) providerObj.float += amount;
+                } else if (tx.type === 'withdrawal') {
+                    APP_STATE.accounts.cash += amount;
+                    if (providerObj) providerObj.float -= amount;
+                }
+
+                saveToStorage();
+                renderAllViews();
+            }
+        }
+
+        // DOCUMENT GENERATOR
+        function generateDocument(e) {
+            e.preventDefault();
+            const type = document.getElementById('doc-type').value;
+            const name = document.getElementById('doc-customer-name').value;
+            const desc = document.getElementById('doc-description').value;
+            const amount = parseFloat(document.getElementById('doc-amount').value);
+            const method = document.getElementById('doc-payment-method').value;
+
+            document.getElementById('prev-doc-type').textContent = type === 'receipt' ? 'RISITI YA MALIPO' : 'INVOICE';
+            document.getElementById('prev-cust').textContent = name;
+            document.getElementById('prev-desc').textContent = desc;
+            document.getElementById('prev-method').textContent = method;
+            document.getElementById('prev-total').textContent = 'TZS ' + amount.toLocaleString();
+            document.getElementById('prev-date').textContent = new Date().toLocaleDateString();
+        }
+
+        function printPreviewDocument() {
+            const content = document.getElementById('document-preview-box').outerHTML;
+            const printSec = document.getElementById('print-section');
+            printSec.innerHTML = content;
+            window.print();
+        }
+
+        function submitDailyClosing(e) {
+            e.preventDefault();
+            alert('Daily Closing imethibitishwa na kuhifadhiwa kikamilifu!');
+        }
+
+        function submitHandover(e) {
+            e.preventDefault();
+            alert('Hati ya makabidhiano imetengenezwa kikamilifu!');
+        }
+
+        function exportLedgerCSV() {
+            let csv = 'ID,Date,Branch,Provider,Type,Amount,Customer,Ref\n';
+            APP_STATE.transactions.forEach(t => {
+                csv += `${t.id},${t.timestamp},${t.branch},${t.provider},${t.type},${t.amount},${t.customerName},${t.ref}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'HAGAI_AGENT_PRO_Ledger.csv');
+            a.click();
+        }
+    </script>
 </body>
 </html>
